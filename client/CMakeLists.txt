@@ -9,9 +9,16 @@ set(SOURCES
         source/ClientHelper.cpp
         source/Settings.cpp
         )
-add_executable(${PROJECT_NAME} source/main.cpp)
+add_executable(${PROJECT_NAME} ${SOURCES} source/main.cpp)
 
 set(TesterName ${PROJECT_NAME}.Tester)
-add_executable(${TesterName} tests/ClientTester.cpp ${gtestMain})
-target_link_libraries(${TesterName} #[[gtest_main]] gtest)
-target_link_libraries(client network)
+target_link_libraries(${PROJECT_NAME} network)
+
+
+set(TEST_SOURCES
+        ${SOURCES}
+        tests/ClientTester.cpp
+        ${gtestMain}
+        )
+add_executable(${TesterName} ${TEST_SOURCES})
+target_link_libraries(${TesterName} #[[gtest_main]] gtest network)

@@ -8,8 +8,6 @@
 #include "string"
 #include "Helper.h"
 
-
-
 class Setting {
 public:
    static Setting& Instance();

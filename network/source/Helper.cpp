@@ -10,4 +10,6 @@ Protocol stringToProtocol(std::string_view str) // TODO if incorrect
       return Protocol::UDP;
    else if(str == "TCP")
       return Protocol::TCP;
+   else
+      throw std::runtime_error{"Incorrect protocol type"};
 }
