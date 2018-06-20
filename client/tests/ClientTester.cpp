@@ -34,11 +34,11 @@ TEST(SettingTests, ParametersToBeSetMustBeSetCorrectly)
 
 TEST(ParserTests, ewr)
 {
-   constexpr int argc{3};
+   constexpr int argc{4};
    char *argv[argc];
-   argv[0] = "--protocol=TCP";
-   argv[1] = "--tcp_port=1111";
-   argv[2] = "--udp_port=1112";
+   argv[1] = "--protocol=TCP";
+   argv[2] = "--tcp_port=1111";
+   argv[3] = "--udp_port=1112";
 
    parseArgs(argc, argv);
 

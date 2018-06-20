@@ -6,11 +6,12 @@
 int main(int argc, char* argv[])
 {
    parseArgs(argc, argv);
-   auto client = makeClient(Setting::Instance().getProtocol());
+//   auto client = makeClient(Setting::Instance().getProtocol());
 
    std::string msg;
    while(true)
    {
+      auto client = makeClient(Setting::Instance().getProtocol());
       std::cin>>msg;
       client->send(msg);
       std::cout << client->recv() << std::endl;

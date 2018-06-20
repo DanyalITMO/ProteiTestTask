@@ -36,6 +36,5 @@ void parseLine(std::string_view line)
    else if(line.find("--protocol=") != std::string::npos)
    {
       Setting::Instance().setProtocol(stringToProtocol(getValue(line)));
-//      std::cout<<
    }
 }
