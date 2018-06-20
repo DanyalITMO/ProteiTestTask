@@ -5,13 +5,17 @@
 #ifndef PROTEITESTTASK_SERVER_H
 #define PROTEITESTTASK_SERVER_H
 
+#include <sys/socket.h>
 
 class Server {
 public:
-    explicit Server(int port);
+    explicit Server(int port, __socket_type type);
     virtual ~Server();
+    bool isInit() const noexcept;
 protected:
+    bool _init{true};
     int _listener;
+
 
 };
 

@@ -14,6 +14,11 @@ void commonHandler()
 void tcpConnection(int port) {
     TCPServer socketWrapper{port};
 
+    if(!socketWrapper.isInit())
+        return;
+
+    std::cout<<"TCP server is start"<<std::endl;
+
     while (true) {
         auto dataSocket = socketWrapper.accept();
         auto r = dataSocket->recv();
@@ -46,7 +51,14 @@ void tcpConnection(int port) {
 }
 
 void UDPConnection(int port) {
+
     UDPServer socketWrapper{port};
+
+    if(!socketWrapper.isInit())
+        return;
+
+    std::cout<<"UDP server is start"<<std::endl;
+
 
     while (true) {
         auto dataSocket = socketWrapper.recv();

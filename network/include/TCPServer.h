@@ -19,10 +19,8 @@ class TCPServer : public Server{
 public:
     explicit TCPServer(int port);
     virtual ~TCPServer();
-    std::shared_ptr<TCPSession> accept();
 
-private:
-    std::list<std::shared_ptr<TCPSession>> _sessions;
+    std::shared_ptr<TCPSession> accept();
 };
 
 

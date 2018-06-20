@@ -9,24 +9,8 @@
 #include <unistd.h>
 #include <cstdio>
 
-UDPServer::UDPServer(int port) : Server{port}
-{
-   struct sockaddr_in addr;
-
-   _listener = socket(AF_INET, SOCK_DGRAM, 0);
-   if (_listener < 0) {
-      perror("socket");
-//        exit(1);
-   }
-
-   addr.sin_family = AF_INET;
-   addr.sin_port = htons(port);
-   addr.sin_addr.s_addr = htonl(INADDR_ANY);
-   if (bind(_listener, (struct sockaddr *) &addr, sizeof(addr)) < 0) {
-      perror("bind");
-//        exit(2);
-   }
-}
+UDPServer::UDPServer(int port) : Server{port, SOCK_DGRAM}
+{}
 
 UDPIncomingMessage UDPServer::recv()
 {
