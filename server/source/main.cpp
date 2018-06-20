@@ -16,6 +16,8 @@ void tcpConnection(int port)
     {
         auto dataSocket = socketWrapper.accept();
         auto r = dataSocket->recv();
+        std::cout<<"TCP incoming message: "<<r<<std::endl;
+
         try {
             Statistic stats;
             auto numbers = filterNumber(r);
