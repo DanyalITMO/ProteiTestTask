@@ -14,13 +14,14 @@
 #include "TCPSession.h"
 #include <list>
 #include "Server.h"
+#include <optional>
 
 class TCPServer : public Server{
 public:
     explicit TCPServer(int port);
     virtual ~TCPServer();
 
-    std::shared_ptr<TCPSession> accept();
+    TCPSession accept();
 };
 
 

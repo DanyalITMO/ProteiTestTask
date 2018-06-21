@@ -9,22 +9,22 @@
 
 /**/
 
-void commonHandler()
-{}
+void commonHandler() {}
+
 void tcpConnection(int port) {
     TCPServer socketWrapper{port};
 
-    if(!socketWrapper.isInit())
+    if (!socketWrapper.isInit())
         return;
 
-    std::cout<<"TCP server is start"<<std::endl;
+    std::cout << "TCP server is start" << std::endl;
 
     while (true) {
         auto dataSocket = socketWrapper.accept();
-        auto r = dataSocket->recv();
-        std::cout << "TCP incoming message: " << r << std::endl;
-
         try {
+            auto r = dataSocket.recv();
+            std::cout << "TCP incoming message: " << r << std::endl;
+
             Statistic stats;
             auto numbers = filterNumber(r);
             if (!numbers.empty()) {
@@ -41,10 +41,10 @@ void tcpConnection(int port) {
                 res.pop_back();
                 std::cout << res << std::endl;
             }
-            dataSocket->send(r);
+            dataSocket.send(r);
         }
         catch (const std::exception &ex) {
-            dataSocket->send("Error");
+            dataSocket.send("Error");
             std::cerr << ex.what();
         }
     }
@@ -54,10 +54,10 @@ void UDPConnection(int port) {
 
     UDPServer socketWrapper{port};
 
-    if(!socketWrapper.isInit())
+    if (!socketWrapper.isInit())
         return;
 
-    std::cout<<"UDP server is start"<<std::endl;
+    std::cout << "UDP server is start" << std::endl;
 
 
     while (true) {

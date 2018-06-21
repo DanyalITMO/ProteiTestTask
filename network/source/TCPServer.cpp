@@ -22,18 +22,15 @@ TCPServer::TCPServer(int port) : Server{port, SOCK_STREAM} {
     }
 }
 
-std::shared_ptr<TCPSession> TCPServer::accept() {
+TCPSession TCPServer::accept() {
     int sock;
     sock = ::accept(_listener, nullptr, nullptr);
     if (sock < 0) {
         perror("accept");
-        exit(3);
+        throw std::runtime_error{"can not accept. Try again"};
     }
-
-    return std::make_shared<TCPSession>(sock);//_sessions.back();
+    return TCPSession{sock};
 }
-
-
 
 TCPServer::~TCPServer() {
 //    for(auto&& it : _sessions)
