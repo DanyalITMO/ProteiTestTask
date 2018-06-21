@@ -5,45 +5,58 @@
 #include <gtest/gtest.h>
 #include <ClientHelper.h>
 #include "Settings.h"
-/*
-class ClientTester : public ::testing::Test
+
+std::string random_string(size_t length)
 {
-
-   ClientTester(){}
-
-};*/
-
-
-TEST(SettingTests, defaultParameterMustBeCorrectSet)
-{
-   EXPECT_EQ(3425, Setting::Instance().getTCPPort());
-   EXPECT_EQ(3426, Setting::Instance().getUDPPort());
-   EXPECT_EQ(Protocol::TCP, Setting::Instance().getProtocol());
+   auto randchar = []() -> char {
+      const char charset[] =
+            "0123456789"
+                  "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                  "abcdefghijklmnopqrstuvwxyz";
+      const size_t max_index = (sizeof(charset) - 1);
+      return charset[rand() % max_index];
+   };
+   std::string str(length, 0);
+   std::generate_n(str.begin(), length, randchar);
+   return str;
 }
 
-TEST(SettingTests, ParametersToBeSetMustBeSetCorrectly)
-{
-   Setting::Instance().setProtocol(Protocol::UDP);
-   Setting::Instance().setTCPPort(555);
-   Setting::Instance().setUDPPort(556);
+class ClientTester : public ::testing::Test {
+public:
+   std::unique_ptr<Client> _client;
 
-   EXPECT_EQ(555, Setting::Instance().getTCPPort());
-   EXPECT_EQ(556, Setting::Instance().getUDPPort());
-   EXPECT_EQ(Protocol::UDP, Setting::Instance().getProtocol());
+   ClientTester()
+   {
+      constexpr int argc{4};
+      char* argv[argc];
+
+      argv[1] = "--protocol=TCP";
+      argv[2] = "--tcp_port=3425";
+      argv[3] = "--udp_port=3426";
+
+      parseArgs(argc, argv);
+
+      _client = makeClient(Setting::Instance().getProtocol());
+
+      if (_client == nullptr) {
+         std::cerr << "The client was not created\n";
+         return;
+      }
+   }
+
+   void checker(const std::string& msg)
+   {
+      _client->send(msg);
+      auto recv_msg = _client->recv();
+
+      EXPECT_EQ(msg, recv_msg);
+   }
+};
+
+TEST_F(ClientTester, small)
+{
+   auto msg = random_string(8);
+   checker(msg);
 }
 
-TEST(ParserTests, ewr)
-{
-   constexpr int argc{4};
-   char *argv[argc];
-   argv[1] = "--protocol=TCP";
-   argv[2] = "--tcp_port=1111";
-   argv[3] = "--udp_port=1112";
-
-   parseArgs(argc, argv);
-
-   EXPECT_EQ(1111, Setting::Instance().getTCPPort());
-   EXPECT_EQ(1112, Setting::Instance().getUDPPort());
-   EXPECT_EQ(Protocol::TCP, Setting::Instance().getProtocol());
-}
 
