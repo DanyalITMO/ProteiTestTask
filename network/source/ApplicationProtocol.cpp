@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include "ApplicationProtocol.h"
 
+unsigned ApplicationProtocolMessage::_lenght_size = 5;
 ApplicationProtocolMessage::ApplicationProtocolMessage(const std::string& data) : _msg{data}
 {
    if (data.size() > 65536)
@@ -42,6 +43,15 @@ std::size_t ApplicationProtocolMessage::getSize() const noexcept
 void ApplicationProtocolMessage::setPacket(const std::string& packet)
 {
    _header = packet.substr(0, _lenght_size);
-   _msg_size = std::stol(_header);
+   _msg_size = std::stoull(_header);
    _msg = packet.substr(_lenght_size, packet.size() - _lenght_size);
+}
+
+std::size_t ApplicationProtocolMessage::getSize(const std::string& packet)
+{
+   if(packet.size() < _lenght_size)
+      std::runtime_error{"incorrect packet. Size is less than header size"};
+
+   auto header = packet.substr(0, _lenght_size);
+   return std::stoull(header);
 }

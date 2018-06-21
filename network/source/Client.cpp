@@ -47,11 +47,17 @@ std::string Client::recv()
    int _buf_size{1024};
    char _buf[_buf_size];
    auto bytes_read = ::recv(_sock, _buf, _buf_size, 0);
+
 //   if(bytes_read <= 0) return "";
 
-   std::string t(_buf);
+   std::string packet(_buf, bytes_read);
 
-   return t;
+   ApplicationProtocolMessage ap{"."};
+   ap.setPacket(packet);
+
+   auto data = ap.getData();
+
+   return data;
 }
 
 Client::~Client()

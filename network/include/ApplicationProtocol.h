@@ -9,7 +9,9 @@
 
 class ApplicationProtocolMessage {
 public:
-    ApplicationProtocolMessage(const std::string &data);
+    static std::size_t getSize(const std::string&);
+
+    ApplicationProtocolMessage(const std::string&);
 
     std::string getPacket() const noexcept;
 
@@ -19,10 +21,10 @@ public:
 
     std::size_t getSize() const noexcept;
 
-    void setPacket(const std::string &packet);
+    void setPacket(const std::string&);
 
 private:
-    unsigned _lenght_size = 5;
+    static unsigned _lenght_size;
     std::size_t _msg_size;
     std::string _header;
     std::string _msg;
