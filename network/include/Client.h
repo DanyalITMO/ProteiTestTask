@@ -6,12 +6,17 @@
 #define PROTEITESTTASK_CLIENT_H
 
 #include "string"
+#include <netinet/in.h>
 
 class Client {
 public:
-   virtual ~Client() = default;
-   virtual void send(const std::string& msg) = 0;
-   virtual std::string recv() = 0;
+   Client(int, __socket_type);
+   virtual ~Client();
+
+   virtual void send(const std::string& msg);
+   virtual std::string recv();
+protected:
+   int _sock;
 };
 
 #endif //PROTEITESTTASK_CLIENT_H

@@ -11,13 +11,7 @@
 
 class TCPClient : public Client{
 public:
-    TCPClient(int port);
-    void send(const std::string& msg) override;
-    std::string recv() override;
-
-    ~TCPClient();
-private:
-    int _sock;
+    explicit TCPClient(int port);
 };
 
 

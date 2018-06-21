@@ -12,13 +12,6 @@
 class UDPClient : public Client {
 public:
     explicit UDPClient(int port);
-    ~UDPClient() override ;
-    void send(const std::string& msg) override;
-    std::string recv() override;
-
-private:
-    int _sock;
-    struct sockaddr_in _addr;
 };
 
 
