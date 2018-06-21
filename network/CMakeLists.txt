@@ -17,7 +17,9 @@ set(SOURCE
         source/UDPClient.cpp
         include/UDPClient.h
         source/TCPClient.cpp
-        include/TCPClient.h)
+        include/TCPClient.h
+        source/ApplicationProtocol.cpp
+        )
 
 include_directories(include)
 add_library(network SHARED ${SOURCE})
