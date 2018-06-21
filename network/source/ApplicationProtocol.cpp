@@ -12,7 +12,7 @@ ApplicationProtocolMessage::ApplicationProtocolMessage(const std::string& data)
 
    _header = std::to_string(data.size());
 
-   while (_header.size() < lenght_size) {
+   while (_header.size() < _lenght_size) {
       _header = "0" + _header;
    }
 
@@ -31,4 +31,11 @@ std::string ApplicationProtocolMessage::getData() const noexcept
 std::string ApplicationProtocolMessage::getHeader() const noexcept
 {
    return _header;
+}
+
+void ApplicationProtocolMessage::setPacket(const std::string& packet)
+{
+   _header = packet.substr(0, _lenght_size);
+   _msg_size = std::stol(_header);
+   _msg = packet.substr(_lenght_size, packet.size() - _lenght_size);
 }

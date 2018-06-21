@@ -8,7 +8,7 @@
 #include <string>
 
 class ApplicationProtocolMessage {
-   unsigned lenght_size = 5;
+   unsigned _lenght_size = 5;
    short _msg_size;
    std::string _header;
    std::string _msg;
@@ -18,6 +18,8 @@ class ApplicationProtocolMessage {
    std::string getPacket() const noexcept;
    std::string getData() const noexcept;
    std::string getHeader() const noexcept;
+
+   void setPacket(const std::string& packet);
 };
 
 #endif //PROTEITESTTASK_APPLICATIONPROTOCOL_H
