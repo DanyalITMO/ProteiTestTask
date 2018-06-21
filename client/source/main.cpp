@@ -12,6 +12,11 @@ int main(int argc, char* argv[])
    while(true)
    {
       auto client = makeClient(Setting::Instance().getProtocol());
+      if(client == nullptr)
+      {
+         std::cerr<<"The client was not created\n";
+         return 1;
+      }
       std::cin>>msg;
       client->send(msg);
       std::cout << client->recv() << std::endl;

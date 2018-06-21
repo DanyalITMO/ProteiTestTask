@@ -12,10 +12,11 @@ class Client {
 public:
    Client(int, __socket_type);
    virtual ~Client();
-
    virtual void send(const std::string& msg);
    virtual std::string recv();
+   virtual bool isInit() const noexcept;
 protected:
+   bool _init{true};
    int _sock;
 };
 

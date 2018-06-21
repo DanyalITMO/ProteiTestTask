@@ -21,6 +21,10 @@ inline decltype(auto) makeClient(Protocol type)
     else if (type == Protocol::TCP)
         client.reset(new TCPClient(Setting::Instance().getTCPPort()));
 
+    if(client != nullptr)
+        if(!client->isInit())
+            client.reset();
+
     return client;
 }
 
