@@ -14,7 +14,6 @@ add_executable(${PROJECT_NAME} ${SOURCES} source/main.cpp)
 set(TesterName ${PROJECT_NAME}.Tester)
 target_link_libraries(${PROJECT_NAME} network)
 
-
 set(TEST_SOURCES
         ${SOURCES}
         tests/ClientTester.cpp

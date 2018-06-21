@@ -5,11 +5,12 @@
 #include <stdexcept>
 #include "ApplicationProtocol.h"
 
-ApplicationProtocolMessage::ApplicationProtocolMessage(const std::string& data)
+ApplicationProtocolMessage::ApplicationProtocolMessage(const std::string& data) : _msg{data}
 {
    if (data.size() > 65536)
       throw std::runtime_error{"data size > 64kb"};
 
+   _msg_size = data.size();
    _header = std::to_string(data.size());
 
    while (_header.size() < _lenght_size) {
@@ -31,6 +32,11 @@ std::string ApplicationProtocolMessage::getData() const noexcept
 std::string ApplicationProtocolMessage::getHeader() const noexcept
 {
    return _header;
+}
+
+std::size_t ApplicationProtocolMessage::getSize() const noexcept
+{
+   return _msg_size;
 }
 
 void ApplicationProtocolMessage::setPacket(const std::string& packet)

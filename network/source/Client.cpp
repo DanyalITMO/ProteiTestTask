@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <cstdio>
 #include <string>
+#include "ApplicationProtocol.h"
 
 Client::Client(int port, __socket_type type)
 {
@@ -36,7 +37,9 @@ Client::Client(int port, __socket_type type)
 
 void Client::send(const std::string& msg)
 {
-   ::send(_sock, msg.c_str(), msg.size(), 0);
+   ApplicationProtocolMessage ap{msg};
+   auto p = ap.getPacket();
+   ::send(_sock, p.c_str(), p.size(), 0);
 }
 
 std::string Client::recv()

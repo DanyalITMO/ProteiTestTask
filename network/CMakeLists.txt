@@ -22,5 +22,13 @@ set(SOURCE
         )
 
 include_directories(include)
-add_library(network SHARED ${SOURCE})
-target_include_directories(network PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include )
+add_library(${PROJECT_NAME} SHARED ${SOURCE})
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include )
+
+set(TEST_SOURCES
+        tests/ApplicationProtocolTester.cpp
+        ${gtestMain}
+        )
+
+add_executable(${PROJECT_NAME}.Tester ${TEST_SOURCES})
+target_link_libraries(${PROJECT_NAME}.Tester ${PROJECT_NAME} gtest)
