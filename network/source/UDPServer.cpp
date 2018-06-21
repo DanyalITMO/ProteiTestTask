@@ -14,7 +14,7 @@ UDPServer::UDPServer(int port) : Server{port, SOCK_DGRAM}
 
 UDPIncomingMessage UDPServer::recv()
 {
-   const int _buf_size = 1024;
+   const int _buf_size = 2 + 65536;
    char _buf[_buf_size];
    struct sockaddr_in addr;//TODO add multiply connection
    socklen_t size = sizeof(addr);
