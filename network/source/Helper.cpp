@@ -15,20 +15,8 @@ Protocol stringToProtocol(std::string_view str) {
 }
 
 
-int sendall(int s, const std::string &msg) {
-    int total = 0;
-    int n;
-
-    while (total < msg.size()) {
-        n = send(s, msg.substr(total, msg.size() - total).c_str(), msg.size() - total, 0);
-        if (n == -1) { break; }
-        total += n;
-    }
-    return n == -1 ? -1 : 0;
-}
-
 int recvApplication(int s, std::string &msg, struct sockaddr_in *addr) {
-    int _buf_size{1024};
+    int _buf_size{65536};
     char _buf[_buf_size];
 
     int bytes_read;
@@ -51,17 +39,32 @@ int recvApplication(int s, std::string &msg, struct sockaddr_in *addr) {
     return msg.size();
 }
 
+int sendall(int s, const std::string &msg, struct sockaddr_in *addr) {
+    int total = 0;
+    int n;
+
+    while (total < msg.size()) {
+        if (addr != nullptr)
+            n = sendto(s, msg.substr(total, msg.size() - total).c_str(), msg.size() - total, 0,
+                       (struct sockaddr *) addr, sizeof(*addr));
+        else
+            n = send(s, msg.substr(total, msg.size() - total).c_str(), msg.size() - total, 0);
+
+        if (n == -1) { break; }
+        total += n;
+    }
+    return n == -1 ? -1 : 0;
+}
+
 int sendApplication(int s, const std::string &msg, struct sockaddr_in *addr) {
     ApplicationProtocolMessage ap{msg};
     auto p = ap.getPacket();
     int ret_code;
     if (addr != nullptr)
-        ret_code = ::sendto(s, p.c_str(), p.size(), 0, (struct sockaddr *) addr, sizeof(*addr));
+        ret_code = ::sendall(s, p, addr);
     else
-        ret_code =  ::send(s, p.c_str(), p.size(), 0);
+        ret_code = ::sendall(s, p);
 
     return ret_code;
 
 }
-// здесь количество действительно посланных байт
-// вернуть -1 при сбое, 0 при успехе
