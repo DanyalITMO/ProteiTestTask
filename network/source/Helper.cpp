@@ -54,7 +54,7 @@ int recvAll(int s, std::string &msg, struct sockaddr_in *addr) {
 
 int recvApplication(int s, std::string &msg, struct sockaddr_in *addr) {
     std::string packet;
-    int bytes_read = recvAll(s, packet,addr);
+    int bytes_read = recvAll(s, packet, addr);
 
     if (bytes_read <= 0) return bytes_read;
 
@@ -68,6 +68,29 @@ int recvApplication(int s, std::string &msg, struct sockaddr_in *addr) {
 }
 
 int sendall(int s, const std::string &msg, struct sockaddr_in *addr) {
+    std::string temp;
+    int max_udp_size = 65507;  //64kb - ip (20 )- udp(8) headers
+    if (msg.size() > max_udp_size) {
+        int chunk_count = msg.size() / max_udp_size;
+        int send_position = 0;
+        for (int i = 0; i < chunk_count; i++) {
+            send_position = i * max_udp_size;
+            auto n = sendMessage(s, msg.substr(send_position, max_udp_size), addr);
+            if (n == -1) return n;
+        }
+        send_position += max_udp_size;
+        auto n = sendMessage(s, msg.substr(send_position, msg.size() - send_position), addr);
+        if (n == -1) return n;
+    }
+    else
+    {
+        auto n = sendMessage(s, msg, addr);
+        if (n == -1) return n;
+    }
+    return msg.size();
+}
+
+int sendMessage(int s, const std::string &msg, struct sockaddr_in *addr) {
     int total = 0;
     int n;
 
@@ -91,5 +114,4 @@ int sendApplication(int s, const std::string &msg, struct sockaddr_in *addr) {
     ret_code = ::sendall(s, p, addr);
 
     return ret_code;
-
 }

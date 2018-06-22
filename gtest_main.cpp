@@ -8,6 +8,6 @@
 int main(int argc, char **argv)
 {
    ::testing::InitGoogleTest(&argc, argv);
-   ::testing::GTEST_FLAG(filter) = "ClientUDPTester.ShouldWorkIfMessageVeryBigSize";
+//   ::testing::GTEST_FLAG(filter) = "ClientUDPTester.ShouldWorkIfMessagVeryBigSize";
    return RUN_ALL_TESTS();
 }

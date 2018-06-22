@@ -24,7 +24,7 @@ TEST(SettingTests, ParametersToBeSetMustBeSetCorrectly)
    EXPECT_EQ(Protocol::UDP, Setting::Instance().getProtocol());
 }
 
-TEST(ParserTests, ewr)
+TEST(ParserTests, ParametersMustSetCorrectFromArgs)
 {
    constexpr int argc{4};
    char *argv[argc];

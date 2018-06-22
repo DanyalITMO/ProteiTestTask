@@ -8,7 +8,7 @@
 unsigned ApplicationProtocolMessage::_lenght_size = 5;
 ApplicationProtocolMessage::ApplicationProtocolMessage(const std::string& data) : _msg{data}
 {
-   if (data.size() > 65536)
+   if (data.size() > 65536)//64kb +  lenght headers
       throw std::runtime_error{"data size > 64kb"};
 
    _msg_size = data.size();

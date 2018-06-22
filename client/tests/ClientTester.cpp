@@ -82,6 +82,13 @@ TEST_F(ClientTCPTester, ShouldWorkIfMessageVeryBigSize)
    checker(msg);
 }
 
+TEST_F(ClientTCPTester, ShouldThrowExceptionIfMessagOverSizeSize)
+{
+   auto msg = random_string(65537);
+   ASSERT_ANY_THROW(_client->send(msg));
+
+}
+
 class ClientUDPTester : public ::testing::Test {
 public:
     std::unique_ptr<Client> _client;
@@ -137,3 +144,15 @@ TEST_F(ClientUDPTester, ShouldWorkIfMessagBigSize)
    checker(msg);
 }
 
+TEST_F(ClientUDPTester, ShouldWorkIfMessagVeryBigSize)
+{
+   auto msg = random_string(65536);
+   checker(msg);
+}
+
+TEST_F(ClientUDPTester, ShouldThrowExceptionIfMessagOverSizeSize)
+{
+   auto msg = random_string(65537);
+   ASSERT_ANY_THROW(_client->send(msg));
+
+}
