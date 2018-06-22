@@ -9,7 +9,24 @@
 
 /**/
 
-void commonHandler() {}
+void commonHandler(const std::string r) {
+    Statistic stats;
+    auto numbers = filterNumber(r);
+    if (!numbers.empty()) {
+        stats.add(numbers);
+        std::string res;
+        res += "Max: " + std::to_string(stats.getMax()) + "\n"
+               + " Min: " + std::to_string(stats.getMin()) + "\n"
+               + " Sum: " + std::to_string(stats.getSum()) + "\n";
+
+        res += "Sort: \n";
+        for (auto &&it : stats.getSort()) {
+            res += std::to_string(it) + ",";
+        }
+        res.pop_back();
+        std::cout << res << std::endl;
+    }
+}
 
 void tcpConnection(int port) {
     TCPServer socketWrapper{port};
@@ -25,22 +42,7 @@ void tcpConnection(int port) {
             auto r = dataSocket.recv();
             std::cout << "TCP incoming message: " << r << std::endl;
 
-            Statistic stats;
-            auto numbers = filterNumber(r);
-            if (!numbers.empty()) {
-                stats.add(numbers);
-                std::string res;
-                res += "Max: " + std::to_string(stats.getMax()) + "\n"
-                       + " Min: " + std::to_string(stats.getMin()) + "\n"
-                       + " Sum: " + std::to_string(stats.getSum()) + "\n";
-
-                res += "Sort: \n";
-                for (auto &&it : stats.getSort()) {
-                    res += std::to_string(it) + ",";
-                }
-                res.pop_back();
-                std::cout << res << std::endl;
-            }
+            commonHandler(r);
             dataSocket.send(r);
         }
         catch (const std::exception &ex) {
@@ -66,22 +68,7 @@ void UDPConnection(int port) {
         std::cout << "UDP incoming message: " << r << std::endl;
 
         try {
-            Statistic stats;
-            auto numbers = filterNumber(r);
-            if (!numbers.empty()) {
-                stats.add(numbers);
-                std::string res;
-                res += "Max: " + std::to_string(stats.getMax()) + "\n"
-                       + " Min: " + std::to_string(stats.getMin()) + "\n"
-                       + " Sum: " + std::to_string(stats.getSum()) + "\n";
-
-                res += "Sort: \n";
-                for (auto &&it : stats.getSort()) {
-                    res += std::to_string(it) + ",";
-                }
-                res.pop_back();
-                std::cout << res << std::endl;
-            }
+            commonHandler(r);
             dataSocket.send(r);
         }
         catch (const std::exception &ex) {
@@ -93,7 +80,6 @@ void UDPConnection(int port) {
 
 
 int main() {
-
 
     std::thread tcp_thread(tcpConnection, 3425);
     std::thread udp_thread(UDPConnection, 3426);
