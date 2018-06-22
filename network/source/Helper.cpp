@@ -15,10 +15,7 @@ Protocol stringToProtocol(std::string_view str) {
 }
 
 int recvAll(int s, std::string &msg, struct sockaddr_in *addr) {
-    int total = 0;
-    int n;
-
-    int _buf_size{65536};
+    int _buf_size{65536 + ApplicationProtocolMessage::getLenghtHeaderSize()};//data and protocol header
     char _buf[_buf_size];
     int bytes_read;
 
@@ -56,9 +53,6 @@ int recvAll(int s, std::string &msg, struct sockaddr_in *addr) {
 }
 
 int recvApplication(int s, std::string &msg, struct sockaddr_in *addr) {
-    int _buf_size{65536};
-    char _buf[_buf_size];
-
     std::string packet;
     int bytes_read = recvAll(s, packet,addr);
 

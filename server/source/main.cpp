@@ -7,8 +7,6 @@
 #include "Statistic.h"
 #include "SyncOut.h"
 
-/**/
-
 void commonHandler(const std::string r) {
     Statistic stats;
     auto numbers = filterNumber(r);
@@ -29,18 +27,17 @@ void commonHandler(const std::string r) {
 }
 
 void tcpConnection(int port) {
-    TCPServer socketWrapper{port};
+    TCPServer tcp_server{port};
 
-    if (!socketWrapper.isInit())
+    if (!tcp_server.isInit())
         return;
 
     SyncOut{} << "TCP server is start" << std::endl;
 
     while (true) {
-        auto dataSocket = socketWrapper.accept();
+        auto dataSocket = tcp_server.accept();
         try {
             auto r = dataSocket.recv();
-            SyncOut{} << "TCP incoming message: " << r << std::endl;
 
             commonHandler(r);
             dataSocket.send(r);
@@ -52,20 +49,18 @@ void tcpConnection(int port) {
     }
 }
 
-void UDPConnection(int port) {
+void udpConnection(int port) {
 
-    UDPServer socketWrapper{port};
+    UDPServer udp_server{port};
 
-    if (!socketWrapper.isInit())
+    if (!udp_server.isInit())
         return;
 
     SyncOut{} << "UDP server is start" << std::endl;
 
-
     while (true) {
-        auto dataSocket = socketWrapper.recv();
+        auto dataSocket = udp_server.recv();
         auto r = dataSocket.getMessage();
-        SyncOut{} << "UDP incoming message: " << r << std::endl;
 
         try {
             commonHandler(r);
@@ -82,7 +77,7 @@ void UDPConnection(int port) {
 int main() {
 
     std::thread tcp_thread(tcpConnection, 3425);
-    std::thread udp_thread(UDPConnection, 3426);
+    std::thread udp_thread(udpConnection, 3426);
 
     if (tcp_thread.joinable())
         tcp_thread.join();

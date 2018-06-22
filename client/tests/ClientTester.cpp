@@ -27,12 +27,11 @@ public:
 
     ClientTCPTester()
    {
-      constexpr int argc{4};
+      constexpr int argc{3};
       char* argv[argc];
 
       argv[1] = "--protocol=TCP";
       argv[2] = "--tcp_port=3425";
-      argv[3] = "--udp_port=3426";
 
       parseArgs(argc, argv);
 
@@ -59,24 +58,29 @@ TEST_F(ClientTCPTester, IfPassOnlyCharacterShouldWork)
    checker(msg);
 }
 
-TEST_F(ClientTCPTester, small)
+TEST_F(ClientTCPTester, ShouldWorkIfMessageSmallSize)
 {
    auto msg = random_string(8);
    checker(msg);
 }
 
-TEST_F(ClientTCPTester, medium)
+TEST_F(ClientTCPTester, ShouldWorkIfMessageMediumSize)
 {
    auto msg = random_string(1000);
    checker(msg);
 }
 
-TEST_F(ClientTCPTester, big)
+TEST_F(ClientTCPTester, ShouldWorkIfMessagBigSize)
 {
    auto msg = random_string(10000);
    checker(msg);
 }
 
+TEST_F(ClientTCPTester, ShouldWorkIfMessageVeryBigSize)
+{
+   auto msg = random_string(65536);
+   checker(msg);
+}
 
 class ClientUDPTester : public ::testing::Test {
 public:
@@ -84,12 +88,11 @@ public:
 
     ClientUDPTester()
     {
-       constexpr int argc{4};
+       constexpr int argc{3};
        char* argv[argc];
 
        argv[1] = "--protocol=UDP";
-       argv[2] = "--tcp_port=3425";
-       argv[3] = "--udp_port=3426";
+       argv[2] = "--udp_port=3426";
 
        parseArgs(argc, argv);
 
@@ -116,20 +119,21 @@ TEST_F(ClientUDPTester, IfPassOnlyCharacterShouldWork)
    checker(msg);
 }
 
-TEST_F(ClientUDPTester, small)
+TEST_F(ClientUDPTester, ShouldWorkIfMessageSmallSize)
 {
    auto msg = random_string(8);
    checker(msg);
 }
 
-TEST_F(ClientUDPTester, medium)
+TEST_F(ClientUDPTester, ShouldWorkIfMessageMediumSize)
 {
    auto msg = random_string(1000);
    checker(msg);
 }
 
-TEST_F(ClientUDPTester, big)
+TEST_F(ClientUDPTester, ShouldWorkIfMessagBigSize)
 {
    auto msg = random_string(10000);
    checker(msg);
 }
+

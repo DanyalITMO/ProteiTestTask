@@ -24,8 +24,7 @@ public:
         }
 //        std::copy(std::begin(arg), std::end(arg), std::end(_numbers));
     }
-/*getMin optional version
- * */
+
     decltype(auto) getOptionalMin() const noexcept
     {
         std::optional<typename decltype(_numbers)::value_type> ret;

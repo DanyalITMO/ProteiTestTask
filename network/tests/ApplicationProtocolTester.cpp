@@ -5,13 +5,7 @@
 #include <gtest/gtest.h>
 #include "ApplicationProtocol.h"
 
-class ApplicationProtocolTester : public ::testing::Test
-{
-
-};
-
-
-TEST(APtests, t1)
+TEST(APtests, ShouldWorkIfCorrectData)
 {
     std::string msg{"data"};
     std::string expect_packet{"00004data"};

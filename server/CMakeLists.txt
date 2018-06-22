@@ -8,8 +8,7 @@ find_package (Threads)
 set(SOURCES
         source/Helper.cpp
         source/main.cpp
-        source/Statistic.cpp
-        source/SyncOut.cpp include/SyncOut.h)
+        source/SyncOut.cpp)
 include_directories(include)
 
 add_executable(server ${SOURCES})

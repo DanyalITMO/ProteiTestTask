@@ -41,7 +41,10 @@ void Client::send(const std::string& msg)
    int ret_code = sendApplication(_sock, msg.c_str());
 
    if(ret_code < 0)
+   {
+      perror("send");
       throw std::runtime_error{"It's impossible to correctly accept data"};
+   }
 }
 
 std::string Client::recv()

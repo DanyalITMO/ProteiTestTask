@@ -16,8 +16,6 @@ UDPServer::UDPServer(int port) : Server{port, SOCK_DGRAM}
 
 
 UDPIncomingMessage UDPServer::recv() {
-
-    std::cout<<"udpserver recv"<<std::endl;
     struct sockaddr_in addr;
     std::string msg;
     int ret_code = recvApplication(_listener, msg, &addr);
