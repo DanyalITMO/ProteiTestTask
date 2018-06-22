@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <cstdio>
 #include <string>
+#include <Helper.h>
 #include "ApplicationProtocol.h"
 
 Client::Client(int port, __socket_type type)
@@ -37,27 +38,19 @@ Client::Client(int port, __socket_type type)
 
 void Client::send(const std::string& msg)
 {
-   ApplicationProtocolMessage ap{msg};
-   auto p = ap.getPacket();
-   ::send(_sock, p.c_str(), p.size(), 0);
+   int ret_code = sendApplication(_sock, msg.c_str());
+
+   if(ret_code < 0)
+      throw std::runtime_error{"It's impossible to correctly accept data"};
 }
 
 std::string Client::recv()
 {
-   int _buf_size{1024};
-   char _buf[_buf_size];
-   auto bytes_read = ::recv(_sock, _buf, _buf_size, 0);
-
-//   if(bytes_read <= 0) return "";
-
-   std::string packet(_buf, bytes_read);
-
-   ApplicationProtocolMessage ap{"."};
-   ap.setPacket(packet);
-
-   auto data = ap.getData();
-
-   return data;
+   std::string msg;
+   int ret_code = recvApplication(_sock, msg);
+   if(ret_code < 0)
+      throw std::runtime_error{"It's impossible to correctly accept data"};
+   return msg;
 }
 
 Client::~Client()

@@ -21,11 +21,11 @@ std::string random_string(size_t length)
    return str;
 }
 
-class ClientTester : public ::testing::Test {
+class ClientTCPTester : public ::testing::Test {
 public:
    std::unique_ptr<Client> _client;
 
-   ClientTester()
+    ClientTCPTester()
    {
       constexpr int argc{4};
       char* argv[argc];
@@ -53,10 +53,83 @@ public:
    }
 };
 
-TEST_F(ClientTester, small)
+TEST_F(ClientTCPTester, IfPassOnlyCharacterShouldWork)
+{
+   auto msg = "qwerty";
+   checker(msg);
+}
+
+TEST_F(ClientTCPTester, small)
 {
    auto msg = random_string(8);
    checker(msg);
 }
 
+TEST_F(ClientTCPTester, medium)
+{
+   auto msg = random_string(1000);
+   checker(msg);
+}
 
+TEST_F(ClientTCPTester, big)
+{
+   auto msg = random_string(10000);
+   checker(msg);
+}
+
+
+class ClientUDPTester : public ::testing::Test {
+public:
+    std::unique_ptr<Client> _client;
+
+    ClientUDPTester()
+    {
+       constexpr int argc{4};
+       char* argv[argc];
+
+       argv[1] = "--protocol=UDP";
+       argv[2] = "--tcp_port=3425";
+       argv[3] = "--udp_port=3426";
+
+       parseArgs(argc, argv);
+
+       _client = makeClient(Setting::Instance().getProtocol());
+
+       if (_client == nullptr) {
+          std::cerr << "The client was not created\n";
+          return;
+       }
+    }
+
+    void checker(const std::string& msg)
+    {
+       _client->send(msg);
+       auto recv_msg = _client->recv();
+
+       EXPECT_EQ(msg, recv_msg);
+    }
+};
+
+TEST_F(ClientUDPTester, IfPassOnlyCharacterShouldWork)
+{
+   auto msg = "qwerty";
+   checker(msg);
+}
+
+TEST_F(ClientUDPTester, small)
+{
+   auto msg = random_string(8);
+   checker(msg);
+}
+
+TEST_F(ClientUDPTester, medium)
+{
+   auto msg = random_string(1000);
+   checker(msg);
+}
+
+TEST_F(ClientUDPTester, big)
+{
+   auto msg = random_string(10000);
+   checker(msg);
+}
