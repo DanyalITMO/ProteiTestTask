@@ -15,5 +15,7 @@ enum class Protocol{
 };
 
 Protocol stringToProtocol(std::string_view);
+int recvAll(int s, std::string& packet);
+int sendall(int s, const std::string& msg);
 
 #endif //PROTEITESTTASK_HELPER_H

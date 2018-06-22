@@ -22,6 +22,7 @@ public:
     virtual ~TCPServer();
 
     TCPSession accept();
+//    std::optional<TCPSession> accept();
 };
 
 

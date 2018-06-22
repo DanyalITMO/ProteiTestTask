@@ -14,6 +14,8 @@
 #include "TCPServer.h"
 #include "TCPSession.h"
 
+#include <optional>
+
 TCPServer::TCPServer(int port) : Server{port, SOCK_STREAM} {
     if(listen(_listener, 1))
     {
@@ -27,7 +29,7 @@ TCPSession TCPServer::accept() {
     sock = ::accept(_listener, nullptr, nullptr);
     if (sock < 0) {
         perror("accept");
-        throw std::runtime_error{"can not accept. Try again"};
+        throw std::runtime_error{"can not accept. Try again"};//TODO handle this
     }
     return TCPSession{sock};
 }
