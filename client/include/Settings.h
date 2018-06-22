@@ -7,6 +7,7 @@
 
 #include "string"
 #include "Helper.h"
+namespace client {
 
 class Setting {
 public:
@@ -27,5 +28,5 @@ private:
    Setting() = default;
    ~Setting() = default;
 };
-
+}
 #endif //PROTEITESTTASK_SETTINGS_H

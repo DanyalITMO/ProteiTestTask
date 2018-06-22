@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "Settings.h"
+namespace client {
 
 Setting& Setting::Instance() {
    static Setting s;
@@ -38,4 +39,5 @@ void Setting::setTCPPort(short port) noexcept
 void Setting::setProtocol(Protocol proto) noexcept
 {
    _proto = proto;
+}
 }
