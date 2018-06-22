@@ -9,9 +9,11 @@
 
 class ApplicationProtocolMessage {
 public:
-    static std::size_t getSize(const std::string&);
+    static std::size_t getSize(const std::string &);
 
-    ApplicationProtocolMessage(const std::string&);
+    static std::size_t getLenghtHeaderSize();
+
+    ApplicationProtocolMessage(const std::string &);
 
     std::string getPacket() const noexcept;
 
@@ -21,9 +23,11 @@ public:
 
     std::size_t getSize() const noexcept;
 
-    void setPacket(const std::string&);
+    void setPacket(const std::string &);
+
 
 private:
+
     static unsigned _lenght_size;
     std::size_t _msg_size;
     std::string _header;

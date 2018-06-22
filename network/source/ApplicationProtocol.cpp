@@ -55,3 +55,8 @@ std::size_t ApplicationProtocolMessage::getSize(const std::string& packet)
    auto header = packet.substr(0, _lenght_size);
    return std::stoull(header);
 }
+
+std::size_t ApplicationProtocolMessage::getLenghtHeaderSize()
+{
+    return _lenght_size;
+}

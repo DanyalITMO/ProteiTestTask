@@ -14,22 +14,56 @@ Protocol stringToProtocol(std::string_view str) {
         throw std::runtime_error{"Incorrect protocol type"};
 }
 
+int recvAll(int s, std::string &msg, struct sockaddr_in *addr) {
+    int total = 0;
+    int n;
+
+    int _buf_size{65536};
+    char _buf[_buf_size];
+    int bytes_read;
+
+    std::string temp;
+
+    while (temp.size() < ApplicationProtocolMessage::getLenghtHeaderSize()) {
+        if (addr != nullptr) {
+            socklen_t size = sizeof(*addr);
+            bytes_read = recvfrom(s, _buf, _buf_size, 0, (struct sockaddr *) addr, &size);
+        } else {
+            bytes_read = ::recv(s, _buf, _buf_size, 0);
+        }
+        if (bytes_read <= 0) return bytes_read;
+
+        temp += std::string(_buf, bytes_read);
+    }
+
+    auto data_size = ApplicationProtocolMessage::getSize(temp);
+
+    while (temp.size() < data_size) {
+        if (addr != nullptr) {
+            socklen_t size = sizeof(*addr);
+            bytes_read = recvfrom(s, _buf, _buf_size, 0, (struct sockaddr *) addr, &size);
+        } else {
+            bytes_read = ::recv(s, _buf, _buf_size, 0);
+        }
+        if (bytes_read <= 0) return bytes_read;
+
+        temp += std::string(_buf, bytes_read);
+    }
+
+    msg = temp;
+
+    return msg.size();
+}
 
 int recvApplication(int s, std::string &msg, struct sockaddr_in *addr) {
     int _buf_size{65536};
     char _buf[_buf_size];
 
-    int bytes_read;
-    if (addr != nullptr) {
-        socklen_t size = sizeof(*addr);
-        bytes_read = recvfrom(s, _buf, _buf_size, 0, (struct sockaddr *) addr, &size);
-    } else {
-        bytes_read = ::recv(s, _buf, _buf_size, 0);
-    }
+    std::string packet;
+    int bytes_read = recvAll(s, packet,addr);
 
     if (bytes_read <= 0) return bytes_read;
 
-    std::string packet(_buf, bytes_read);
 
     ApplicationProtocolMessage ap{"."};
     ap.setPacket(packet);
@@ -60,10 +94,7 @@ int sendApplication(int s, const std::string &msg, struct sockaddr_in *addr) {
     ApplicationProtocolMessage ap{msg};
     auto p = ap.getPacket();
     int ret_code;
-    if (addr != nullptr)
-        ret_code = ::sendall(s, p, addr);
-    else
-        ret_code = ::sendall(s, p);
+    ret_code = ::sendall(s, p, addr);
 
     return ret_code;
 
