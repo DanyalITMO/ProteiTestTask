@@ -15,30 +15,28 @@
 #include "TCPSession.h"
 
 #include <optional>
+namespace network {
 
-TCPServer::TCPServer(int port) : Server{port, SOCK_STREAM} {
-    if(listen(_listener, 1))
-    {
-        _init = false;
-        return;
+    TCPServer::TCPServer(int port) : Server{port, SOCK_STREAM} {
+        if (listen(_listener, 1)) {
+            _init = false;
+            return;
+        }
+    }
+
+    TCPSession TCPServer::accept() {
+        int sock;
+        sock = ::accept(_listener, nullptr, nullptr);
+        if (sock < 0) {
+            perror("accept");
+            throw std::runtime_error{"can not accept. Try again"};//TODO handle this
+        }
+        return TCPSession{sock};
+    }
+
+    TCPServer::~TCPServer() {
+
+        close(_listener);
     }
 }
-
-TCPSession TCPServer::accept() {
-    int sock;
-    sock = ::accept(_listener, nullptr, nullptr);
-    if (sock < 0) {
-        perror("accept");
-        throw std::runtime_error{"can not accept. Try again"};//TODO handle this
-    }
-    return TCPSession{sock};
-}
-
-TCPServer::~TCPServer() {
-//    for(auto&& it : _sessions)
-//        it.reset();
-
-    close(_listener);
-}
-
 

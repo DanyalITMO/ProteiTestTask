@@ -6,22 +6,25 @@
 #define PROTEITESTTASK_SERVER_H
 
 #include <sys/socket.h>
+namespace network {
 
-class Server {
-public:
-    explicit Server(int port, __socket_type type);
-    virtual ~Server();
-    bool isInit() const noexcept;
+    class Server {
+    public:
+        explicit Server(int port, __socket_type type);
 
-   Server& operator=(const Server&) = delete;
-   Server(const Server&) = delete;
+        virtual ~Server();
 
-protected:
-    bool _init{true};
-    int _listener;
+        bool isInit() const noexcept;
+
+        Server &operator=(const Server &) = delete;
+
+        Server(const Server &) = delete;
+
+    protected:
+        bool _init{true};
+        int _listener;
 
 
-};
-
-
+    };
+}
 #endif //PROTEITESTTASK_SERVER_H

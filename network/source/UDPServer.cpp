@@ -11,16 +11,19 @@
 #include <iostream>
 #include <Helper.h>
 
-UDPServer::UDPServer(int port) : Server{port, SOCK_DGRAM}
-{}
+
+namespace network {
+
+    UDPServer::UDPServer(int port) : Server{port, SOCK_DGRAM} {}
 
 
-UDPIncomingMessage UDPServer::recv() {
-    struct sockaddr_in addr;
-    std::string msg;
-    int ret_code = recvApplication(_listener, msg, &addr);
-    if (ret_code < 0)
-        throw std::runtime_error{"It's impossible to correctly accept data"};
+    UDPIncomingMessage UDPServer::recv() {
+        struct sockaddr_in addr;
+        std::string msg;
+        int ret_code = recvApplication(_listener, msg, &addr);
+        if (ret_code < 0)
+            throw std::runtime_error{"It's impossible to correctly accept data"};
 
-    return UDPIncomingMessage{addr, _listener, msg};
+        return UDPIncomingMessage{addr, _listener, msg};
+    }
 }

@@ -14,54 +14,51 @@
 #include <Helper.h>
 #include "ApplicationProtocol.h"
 
-Client::Client(int port, __socket_type type)
-{
-   _sock = socket(AF_INET, type, 0);
+namespace network {
 
-   if (_sock < 0) {
-      perror("socket");
-      _init = false;
-      return;
-   }
+    Client::Client(int port, __socket_type type) {
+       _sock = socket(AF_INET, type, 0);
 
-   struct sockaddr_in addr;
-   addr.sin_family = AF_INET;
-   addr.sin_port = htons(port);
-   addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+       if (_sock < 0) {
+          perror("socket");
+          _init = false;
+          return;
+       }
 
-   if (connect(_sock, (struct sockaddr*) &addr, sizeof(addr)) < 0) {
-      perror("connect");
-      _init = false;
-      return;
-   }
-}
+       struct sockaddr_in addr;
+       addr.sin_family = AF_INET;
+       addr.sin_port = htons(port);
+       addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 
-void Client::send(const std::string& msg)
-{
-   int ret_code = sendApplication(_sock, msg.c_str());
+       if (connect(_sock, (struct sockaddr *) &addr, sizeof(addr)) < 0) {
+          perror("connect");
+          _init = false;
+          return;
+       }
+    }
 
-   if(ret_code < 0)
-   {
-      perror("send");
-      throw std::runtime_error{"It's impossible to correctly accept data"};
-   }
-}
+    void Client::send(const std::string &msg) {
+       int ret_code = sendApplication(_sock, msg.c_str());
 
-std::string Client::recv()
-{
-   std::string msg;
-   int ret_code = recvApplication(_sock, msg);
-   if(ret_code < 0)
-      throw std::runtime_error{"It's impossible to correctly accept data"};
-   return msg;
-}
+       if (ret_code < 0) {
+          perror("send");
+          throw std::runtime_error{"It's impossible to correctly accept data"};
+       }
+    }
 
-Client::~Client()
-{
-   close(_sock);
-}
+    std::string Client::recv() {
+       std::string msg;
+       int ret_code = recvApplication(_sock, msg);
+       if (ret_code < 0)
+          throw std::runtime_error{"It's impossible to correctly accept data"};
+       return msg;
+    }
 
-bool Client::isInit() const noexcept
-{
-   return _init;
+    Client::~Client() {
+       close(_sock);
+    }
+
+    bool Client::isInit() const noexcept {
+       return _init;
+    }
 }

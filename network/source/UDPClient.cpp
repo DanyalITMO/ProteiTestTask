@@ -10,5 +10,7 @@
 #include <cstdio>
 #include <string>
 
-UDPClient::UDPClient(int port) : Client{port, SOCK_DGRAM}
-{}
+namespace network {
+
+    UDPClient::UDPClient(int port) : Client{port, SOCK_DGRAM} {}
+}

@@ -8,39 +8,42 @@
 #include <unistd.h>
 #include <cstdio>
 
-Server::Server(int port, __socket_type type) {
-    struct sockaddr_in addr;
+namespace network {
 
-    _listener = socket(AF_INET, type, 0);
-    if (_listener < 0) {
-        perror("socket");
-        _init = false;
-        return;
+    Server::Server(int port, __socket_type type) {
+        struct sockaddr_in addr;
+
+        _listener = socket(AF_INET, type, 0);
+        if (_listener < 0) {
+            perror("socket");
+            _init = false;
+            return;
+        }
+
+        int yes = 1;
+        if (setsockopt(_listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
+            perror("setsockopt");
+            _init = false;
+            return;
+        }
+
+        addr.sin_family = AF_INET;
+        addr.sin_port = htons(port);
+        addr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+        if (bind(_listener, (struct sockaddr *) &addr, sizeof(addr)) == -1) {
+            perror("bind");
+            _init = false;
+            return;
+        }
+
     }
 
-    int yes = 1;
-    if (setsockopt(_listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) {
-        perror("setsockopt");
-        _init = false;
-        return;
+    bool Server::isInit() const noexcept {
+        return _init;
     }
 
-    addr.sin_family = AF_INET;
-    addr.sin_port = htons(port);
-    addr.sin_addr.s_addr = htonl(INADDR_ANY);
-
-    if (bind(_listener, (struct sockaddr *) &addr, sizeof(addr)) == -1) {
-        perror("bind");
-        _init = false;
-        return;
+    Server::~Server() {
+        close(_listener);
     }
-
-}
-
-bool Server::isInit() const noexcept {
-    return _init;
-}
-Server::~Server()
-{
-    close(_listener);
 }

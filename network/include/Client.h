@@ -7,21 +7,26 @@
 
 #include "string"
 #include <netinet/in.h>
+namespace network {
+    class Client {
+    public:
+        Client(int, __socket_type);
 
-class Client {
-public:
-   Client(int, __socket_type);
-   virtual ~Client();
-   virtual void send(const std::string& msg);
-   virtual std::string recv();
-   virtual bool isInit() const noexcept;
+        virtual ~Client();
 
-   Client& operator=(const Client&) = delete;
-   Client(const Client&) = delete;
+        virtual void send(const std::string &msg);
 
-protected:
-   bool _init{true};
-   int _sock;
-};
+        virtual std::string recv();
 
+        virtual bool isInit() const noexcept;
+
+        Client &operator=(const Client &) = delete;
+
+        Client(const Client &) = delete;
+
+    protected:
+        bool _init{true};
+        int _sock;
+    };
+}
 #endif //PROTEITESTTASK_CLIENT_H

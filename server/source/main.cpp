@@ -30,7 +30,7 @@ namespace server {
     }
 
     void tcpConnection(int port) {
-        TCPServer tcp_server{port};
+        network::TCPServer tcp_server{port};
 
         if (!tcp_server.isInit())
             return;
@@ -54,7 +54,7 @@ namespace server {
 
     void udpConnection(int port) {
 
-        UDPServer udp_server{port};
+        network::UDPServer udp_server{port};
 
         if (!udp_server.isInit())
             return;

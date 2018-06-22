@@ -15,13 +15,13 @@ public:
 
    short getUDPPort() const noexcept;
    short getTCPPort() const noexcept;
-   Protocol getProtocol() const noexcept;
+   network::Protocol getProtocol() const noexcept;
 
    void setUDPPort(short) noexcept;
    void setTCPPort(short) noexcept;
-   void setProtocol(Protocol) noexcept;
+   void setProtocol(network::Protocol) noexcept;
 private:
-   Protocol _proto{Protocol::TCP};
+    network::Protocol _proto{network::Protocol::TCP};
    short _server_port_udp{3426};
    short _server_port_tcp{3425};
 

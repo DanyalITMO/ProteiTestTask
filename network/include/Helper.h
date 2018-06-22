@@ -8,16 +8,21 @@
 #include <UDPClient.h>
 #include <TCPClient.h>
 #include <memory>
+namespace network {
 
-enum class Protocol{
-   TCP,
-   UDP
-};
+    enum class Protocol {
+        TCP,
+        UDP
+    };
 
-Protocol stringToProtocol(std::string_view);
-int recvApplication(int s, std::string& msg, struct sockaddr_in* addr = nullptr);
-int sendApplication(int s, const std::string &msg, struct sockaddr_in *addr = nullptr);
-int sendall(int s, const std::string& msg, struct sockaddr_in *addr = nullptr);
-int sendMessage(int s, const std::string& msg, struct sockaddr_in *addr = nullptr);
+    Protocol stringToProtocol(std::string_view);
 
+    int recvApplication(int s, std::string &msg, struct sockaddr_in *addr = nullptr);
+
+    int sendApplication(int s, const std::string &msg, struct sockaddr_in *addr = nullptr);
+
+    int sendall(int s, const std::string &msg, struct sockaddr_in *addr = nullptr);
+
+    int sendMessage(int s, const std::string &msg, struct sockaddr_in *addr = nullptr);
+}
 #endif //PROTEITESTTASK_HELPER_H

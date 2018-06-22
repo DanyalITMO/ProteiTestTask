@@ -23,7 +23,7 @@ namespace client {
 
     class ClientTCPTester : public ::testing::Test {
     public:
-        std::unique_ptr<Client> _client;
+        std::unique_ptr<network::Client> _client;
 
         ClientTCPTester() {
            constexpr int argc{3};
@@ -83,7 +83,7 @@ namespace client {
 
     class ClientUDPTester : public ::testing::Test {
     public:
-        std::unique_ptr<Client> _client;
+        std::unique_ptr<network::Client> _client;
 
         ClientUDPTester() {
            constexpr int argc{3};

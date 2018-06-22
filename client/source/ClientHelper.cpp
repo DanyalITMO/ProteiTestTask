@@ -24,7 +24,7 @@ namespace client {
        } else if (line.find("--udp_port=") != std::string::npos) {
           Setting::Instance().setUDPPort(static_cast<short>(std::stoi(std::string{getValue(line)})));
        } else if (line.find("--protocol=") != std::string::npos) {
-          Setting::Instance().setProtocol(stringToProtocol(getValue(line)));
+          Setting::Instance().setProtocol(network::stringToProtocol(getValue(line)));
        }
     }
 }

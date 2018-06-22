@@ -15,13 +15,13 @@ namespace client {
     }
 
     TEST(SettingTests, ParametersToBeSetMustBeSetCorrectly) {
-        Setting::Instance().setProtocol(Protocol::UDP);
+        Setting::Instance().setProtocol(network::Protocol::UDP);
         Setting::Instance().setTCPPort(555);
         Setting::Instance().setUDPPort(556);
 
         EXPECT_EQ(555, Setting::Instance().getTCPPort());
         EXPECT_EQ(556, Setting::Instance().getUDPPort());
-        EXPECT_EQ(Protocol::UDP, Setting::Instance().getProtocol());
+        EXPECT_EQ(network::Protocol::UDP, Setting::Instance().getProtocol());
     }
 
     TEST(ParserTests, ParametersMustSetCorrectFromArgs) {
@@ -35,6 +35,6 @@ namespace client {
 
         EXPECT_EQ(1111, Setting::Instance().getTCPPort());
         EXPECT_EQ(1112, Setting::Instance().getUDPPort());
-        EXPECT_EQ(Protocol::TCP, Setting::Instance().getProtocol());
+        EXPECT_EQ(network::Protocol::TCP, Setting::Instance().getProtocol());
     }
 }

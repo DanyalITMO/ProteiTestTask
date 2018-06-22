@@ -8,11 +8,11 @@
 #include <netinet/in.h>
 #include <string>
 #include "Client.h"
-
-class UDPClient : public Client {
-public:
-    explicit UDPClient(int port);
-};
-
+namespace network {
+    class UDPClient : public Client {
+    public:
+        explicit UDPClient(int port);
+    };
+}
 
 #endif //PROTEITESTTASK_UDPCLIENT_H

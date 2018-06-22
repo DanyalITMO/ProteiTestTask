@@ -9,6 +9,6 @@
 #include <unistd.h>
 #include <iostream>
 
-TCPClient::TCPClient(int port) : Client{port, SOCK_STREAM}
-{}
-
+namespace network {
+    TCPClient::TCPClient(int port) : Client{port, SOCK_STREAM} {}
+}

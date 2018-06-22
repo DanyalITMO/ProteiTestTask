@@ -6,21 +6,26 @@
 #define SERVER_TCPSESSION_H
 
 #include <string>
+namespace network {
 
-class TCPSession {
-public:
-   explicit TCPSession(int);
-   std::string recv();
-   void send(std::string);
+    class TCPSession {
+    public:
+        explicit TCPSession(int);
 
-   ~TCPSession();
+        std::string recv();
 
-   TCPSession& operator=(const TCPSession&) = delete;
-   TCPSession(const TCPSession&) = delete;
+        void send(std::string);
 
-private:
-   const int _buf_size{1024};
-   int _sock;
-};
+        ~TCPSession();
+
+        TCPSession &operator=(const TCPSession &) = delete;
+
+        TCPSession(const TCPSession &) = delete;
+
+    private:
+        const int _buf_size{1024};
+        int _sock;
+    };
+}
 
 #endif

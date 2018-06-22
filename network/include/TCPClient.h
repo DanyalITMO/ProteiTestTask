@@ -8,11 +8,12 @@
 
 #include <string>
 #include "Client.h"
+namespace network {
 
-class TCPClient : public Client{
-public:
-    explicit TCPClient(int port);
-};
-
+    class TCPClient : public Client {
+    public:
+        explicit TCPClient(int port);
+    };
+}
 
 #endif //PROTEITESTTASK_TCPCLIENT_H

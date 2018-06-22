@@ -7,23 +7,28 @@
 
 #include <netinet/in.h>
 #include <string>
+namespace network {
 
-class UDPIncomingMessage {
-public:
-    UDPIncomingMessage(const struct sockaddr_in& addr, int socket, std::string_view msg);
-    ~UDPIncomingMessage() = default;
-    std::string getMessage() const;
-    void send(const std::string& message);
+    class UDPIncomingMessage {
+    public:
+        UDPIncomingMessage(const struct sockaddr_in &addr, int socket, std::string_view msg);
 
-   UDPIncomingMessage& operator=(const UDPIncomingMessage&) = delete;
-   UDPIncomingMessage(const UDPIncomingMessage&) = delete;
+        ~UDPIncomingMessage() = default;
 
-private:
-    struct sockaddr_in _addr;
-    const int _server_socket;
-    std::string _message;
+        std::string getMessage() const;
 
-};
+        void send(const std::string &message);
 
+        UDPIncomingMessage &operator=(const UDPIncomingMessage &) = delete;
+
+        UDPIncomingMessage(const UDPIncomingMessage &) = delete;
+
+    private:
+        struct sockaddr_in _addr;
+        const int _server_socket;
+        std::string _message;
+
+    };
+}
 
 #endif //PROTEITESTTASK_UDPSESSION_H

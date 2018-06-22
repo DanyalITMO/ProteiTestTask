@@ -14,12 +14,12 @@ namespace client {
 
     void parseLine(std::string_view);
 
-    inline decltype(auto) makeClient(Protocol type) {
-        std::unique_ptr<Client> client;
-        if (type == Protocol::UDP)
-            client.reset(new UDPClient(Setting::Instance().getUDPPort()));
-        else if (type == Protocol::TCP)
-            client.reset(new TCPClient(Setting::Instance().getTCPPort()));
+    inline decltype(auto) makeClient(network::Protocol type) {
+        std::unique_ptr<network::Client> client;
+        if (type == network::Protocol::UDP)
+            client.reset(new network::UDPClient(Setting::Instance().getUDPPort()));
+        else if (type == network::Protocol::TCP)
+            client.reset(new network::TCPClient(Setting::Instance().getTCPPort()));
 
         if (client != nullptr)
             if (!client->isInit())

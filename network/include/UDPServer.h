@@ -12,13 +12,17 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-class UDPServer: public Server{
-public:
-    explicit UDPServer(int port);
-    UDPIncomingMessage recv();
-private:
-    const int _buf_size{1024};
-};
+namespace network {
 
+    class UDPServer : public Server {
+    public:
+        explicit UDPServer(int port);
+
+        UDPIncomingMessage recv();
+
+    private:
+        const int _buf_size{1024};
+    };
+}
 
 #endif //PROTEITESTTASK_UDPSERVER_H
