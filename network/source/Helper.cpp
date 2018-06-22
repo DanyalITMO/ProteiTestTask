@@ -47,5 +47,26 @@ int recvAll(int s, std::string& msg)
 
    return msg.size();
 }
+
+
+int recvAll(int s, std::string& msg, struct sockaddr_in* addr)
+{
+    int _buf_size{1024};
+    char _buf[_buf_size];
+
+    socklen_t size = sizeof(*addr);
+    auto bytes_read = recvfrom(s, _buf, _buf_size, 0, (struct sockaddr *) addr, &size);
+
+    if(bytes_read <= 0) return bytes_read;
+
+    std::string packet(_buf, bytes_read);
+
+    ApplicationProtocolMessage ap{"."};
+    ap.setPacket(packet);
+
+    msg = ap.getData();
+
+    return msg.size();
+}
 // здесь количество действительно посланных байт
 // вернуть -1 при сбое, 0 при успехе

@@ -8,10 +8,12 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <cstdio>
+#include <iostream>
+#include <Helper.h>
 
 UDPServer::UDPServer(int port) : Server{port, SOCK_DGRAM}
 {}
-
+/*
 UDPIncomingMessage UDPServer::recv()
 {
    const int _buf_size = 2 + 65536;
@@ -25,4 +27,18 @@ UDPIncomingMessage UDPServer::recv()
 
    UDPIncomingMessage udpSession{addr, _listener, t};
    return udpSession;
+}
+*/
+
+UDPIncomingMessage UDPServer::recv() {
+
+    std::cout<<"udpserver recv"<<std::endl;
+    struct sockaddr_in addr;
+    std::string msg;
+    int ret_code = recvAll(_listener, msg, &addr);
+    if (ret_code < 0)
+        throw std::runtime_error{"It's impossible to correctly accept data"};
+
+    UDPIncomingMessage udpSession{addr, _listener, msg};
+    return udpSession;
 }
