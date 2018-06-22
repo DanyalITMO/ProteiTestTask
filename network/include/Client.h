@@ -15,6 +15,10 @@ public:
    virtual void send(const std::string& msg);
    virtual std::string recv();
    virtual bool isInit() const noexcept;
+
+   Client& operator=(const Client&) = delete;
+   Client(const Client&) = delete;
+
 protected:
    bool _init{true};
    int _sock;

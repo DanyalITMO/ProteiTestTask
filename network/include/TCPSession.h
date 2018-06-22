@@ -9,15 +9,18 @@
 
 class TCPSession {
 public:
-    explicit TCPSession(int);
-    std::string recv();
-    void send(std::string);
+   explicit TCPSession(int);
+   std::string recv();
+   void send(std::string);
 
-    ~TCPSession();
+   ~TCPSession();
+
+   TCPSession& operator=(const TCPSession&) = delete;
+   TCPSession(const TCPSession&) = delete;
+
 private:
-    const int _buf_size{1024};
-    int _sock;
+   const int _buf_size{1024};
+   int _sock;
 };
-
 
 #endif

@@ -24,6 +24,5 @@ UDPIncomingMessage UDPServer::recv() {
     if (ret_code < 0)
         throw std::runtime_error{"It's impossible to correctly accept data"};
 
-    UDPIncomingMessage udpSession{addr, _listener, msg};
-    return udpSession;
+    return UDPIncomingMessage{addr, _listener, msg};
 }

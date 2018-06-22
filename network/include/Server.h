@@ -12,6 +12,10 @@ public:
     explicit Server(int port, __socket_type type);
     virtual ~Server();
     bool isInit() const noexcept;
+
+   Server& operator=(const Server&) = delete;
+   Server(const Server&) = delete;
+
 protected:
     bool _init{true};
     int _listener;

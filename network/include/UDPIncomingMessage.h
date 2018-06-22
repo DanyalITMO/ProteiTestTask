@@ -15,6 +15,9 @@ public:
     std::string getMessage() const;
     void send(const std::string& message);
 
+   UDPIncomingMessage& operator=(const UDPIncomingMessage&) = delete;
+   UDPIncomingMessage(const UDPIncomingMessage&) = delete;
+
 private:
     struct sockaddr_in _addr;
     const int _server_socket;

@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include "ClientHelper.h"
-#include "Settings.h"
 
 void parseArgs(int argc, char* argv[])
 {
