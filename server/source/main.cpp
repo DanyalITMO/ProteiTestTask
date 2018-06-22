@@ -5,7 +5,7 @@
 #include "TCPServer.h"
 #include "Helper.h"
 #include "Statistic.h"
-
+#include "SyncOut.h"
 
 /**/
 
@@ -24,7 +24,7 @@ void commonHandler(const std::string r) {
             res += std::to_string(it) + ",";
         }
         res.pop_back();
-        std::cout << res << std::endl;
+        SyncOut{} << res << std::endl;
     }
 }
 
@@ -34,13 +34,13 @@ void tcpConnection(int port) {
     if (!socketWrapper.isInit())
         return;
 
-    std::cout << "TCP server is start" << std::endl;
+    SyncOut{} << "TCP server is start" << std::endl;
 
     while (true) {
         auto dataSocket = socketWrapper.accept();
         try {
             auto r = dataSocket.recv();
-            std::cout << "TCP incoming message: " << r << std::endl;
+            SyncOut{} << "TCP incoming message: " << r << std::endl;
 
             commonHandler(r);
             dataSocket.send(r);
@@ -59,13 +59,13 @@ void UDPConnection(int port) {
     if (!socketWrapper.isInit())
         return;
 
-    std::cout << "UDP server is start" << std::endl;
+    SyncOut{} << "UDP server is start" << std::endl;
 
 
     while (true) {
         auto dataSocket = socketWrapper.recv();
         auto r = dataSocket.getMessage();
-        std::cout << "UDP incoming message: " << r << std::endl;
+        SyncOut{} << "UDP incoming message: " << r << std::endl;
 
         try {
             commonHandler(r);

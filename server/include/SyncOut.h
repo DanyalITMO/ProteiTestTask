@@ -5,13 +5,12 @@
 #ifndef PROTEITESTTASK_SYNCOUT_H
 #define PROTEITESTTASK_SYNCOUT_H
 
-#include <iostream>
-/*class SyncOut: public std::ostringstream  {
+#include <sstream>
+#include <mutex>
+
+class SyncOut: public std::ostringstream  {
+   std::mutex _mutex;
 public:
-    SyncOut() {}
-    ~my_stream() {
-        ThreadSafeLogging(this->str());
-    }
+    ~SyncOut();
 };
-*/
 #endif //PROTEITESTTASK_SYNCOUT_H
