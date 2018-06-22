@@ -28,10 +28,6 @@ void parseLine(std::string_view line)
    {
       Setting::Instance().setUDPPort(static_cast<short>(std::stoi(std::string{getValue(line)})));
    }
-   else if(line.find("--server_address=") != std::string::npos)
-   {
-      Setting::Instance().setAddress(getValue(line));
-   }
    else if(line.find("--protocol=") != std::string::npos)
    {
       Setting::Instance().setProtocol(stringToProtocol(getValue(line)));
