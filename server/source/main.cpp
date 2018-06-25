@@ -51,7 +51,7 @@ namespace server {
             }
         }
     }
-/*
+
     void udpConnection(int port) {
 
         network::UDPServer udp_server{port};
@@ -74,7 +74,7 @@ namespace server {
                 std::cerr << ex.what();
             }
         }
-    }*/
+    }
 
 }
 
@@ -84,12 +84,12 @@ int main(int argc, char* argv[]) {
     parseArgs(argc, argv);
 
     std::thread tcp_thread(tcpConnection, Setting::Instance().getTCPPort());
-//    std::thread udp_thread(udpConnection, Setting::Instance().getUDPPort());
+    std::thread udp_thread(udpConnection, Setting::Instance().getUDPPort());
 
     if (tcp_thread.joinable())
         tcp_thread.join();
-//    if (udp_thread.joinable())
-//        udp_thread.join();
+    if (udp_thread.joinable())
+        udp_thread.join();
 
     return 0;
 }
