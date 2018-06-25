@@ -6,6 +6,8 @@
 #define PROTEITESTTASK_SERVER_H
 
 #include <sys/socket.h>
+#include "HighLevelSocket.h"
+
 namespace network {
 
     class Server {
@@ -22,7 +24,7 @@ namespace network {
 
     protected:
         bool _init{true};
-        int _listener;
+        HighLevelSocket _listener;
 
 
     };

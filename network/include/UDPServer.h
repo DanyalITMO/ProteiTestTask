@@ -13,7 +13,7 @@
 #include <arpa/inet.h>
 
 namespace network {
-
+/*
     class UDPServer : public Server {
     public:
         explicit UDPServer(int port);
@@ -22,7 +22,7 @@ namespace network {
 
     private:
         const int _buf_size{1024};
-    };
+    };*/
 }
 
 #endif //PROTEITESTTASK_UDPSERVER_H

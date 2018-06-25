@@ -27,7 +27,9 @@ public:
 //   HighLevelSocket& operator=(HighLevelSocket&&) = default;
 
 
-   ~HighLevelSocket();
+   ~HighLevelSocket() = default;
+
+   int close();
 
    int sendall(const std::string& msg, struct sockaddr_in* addr = nullptr);
    int recvAll(std::string& msg, struct sockaddr_in* addr = nullptr);

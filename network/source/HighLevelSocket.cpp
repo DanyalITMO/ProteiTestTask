@@ -26,9 +26,13 @@ HighLevelSocket::HighLevelSocket(int port, __socket_type type)
 HighLevelSocket::HighLevelSocket(int sock) : _sock{sock}
 {}
 
-HighLevelSocket::~HighLevelSocket()
+/*HighLevelSocket::~HighLevelSocket()
 {
    close(_sock);
+}*/
+
+int HighLevelSocket::close() {
+    ::close(_sock);
 }
 
 int HighLevelSocket::recvAll(std::string& msg, struct sockaddr_in* addr)

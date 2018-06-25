@@ -13,7 +13,7 @@
 
 
 namespace network {
-
+/*
     UDPServer::UDPServer(int port) : Server{port, SOCK_DGRAM} {}
 
 
@@ -25,5 +25,5 @@ namespace network {
             throw std::runtime_error{"It's impossible to correctly accept data"};
 
         return UDPIncomingMessage{addr, _listener, msg};
-    }
+    }*/
 }

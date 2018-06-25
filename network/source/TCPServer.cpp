@@ -20,7 +20,7 @@
 namespace network {
 
     TCPServer::TCPServer(int port) : Server{port, SOCK_STREAM} {
-        if (listen(_listener, 1)) {
+        if (listen(_listener.getLowLevelSocket(), 1)) {
             _init = false;
             return;
         }
@@ -28,7 +28,7 @@ namespace network {
 
     TCPSession TCPServer::accept() {
         int sock;
-        sock = ::accept(_listener, nullptr, nullptr);
+        sock = ::accept(_listener.getLowLevelSocket(), nullptr, nullptr);
         if (sock < 0) {
             perror("accept");
             throw std::runtime_error{"can not accept. Try again"};//TODO handle this
@@ -36,11 +36,6 @@ namespace network {
 
 
         return TCPSession{HighLevelSocket(sock)};
-    }
-
-    TCPServer::~TCPServer() {
-
-        close(_listener);
     }
 }
 

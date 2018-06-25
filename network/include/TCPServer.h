@@ -21,7 +21,7 @@ namespace network {
     public:
         explicit TCPServer(int port);
 
-        virtual ~TCPServer();
+        virtual ~TCPServer() = default;
 
         TCPSession accept();
     };
