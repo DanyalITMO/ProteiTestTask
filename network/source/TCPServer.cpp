@@ -15,6 +15,8 @@
 #include "TCPSession.h"
 
 #include <optional>
+#include <HighLevelSocket.h>
+
 namespace network {
 
     TCPServer::TCPServer(int port) : Server{port, SOCK_STREAM} {
@@ -31,7 +33,9 @@ namespace network {
             perror("accept");
             throw std::runtime_error{"can not accept. Try again"};//TODO handle this
         }
-        return TCPSession{sock};
+
+
+        return TCPSession{HighLevelSocket(sock)};
     }
 
     TCPServer::~TCPServer() {

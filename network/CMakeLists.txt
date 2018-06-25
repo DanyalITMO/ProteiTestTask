@@ -19,6 +19,7 @@ set(SOURCE
         source/TCPClient.cpp
         include/TCPClient.h
         source/ApplicationProtocol.cpp
+        source/HighLevelSocket.cpp
         )
 
 include_directories(include)

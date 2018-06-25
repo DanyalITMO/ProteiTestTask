@@ -6,17 +6,17 @@
 #define SERVER_TCPSESSION_H
 
 #include <string>
+#include "HighLevelSocket.h"
+
 namespace network {
 
     class TCPSession {
     public:
-        explicit TCPSession(int);
+        explicit TCPSession(HighLevelSocket&& socket);
 
         std::string recv();
 
         void send(std::string);
-
-        ~TCPSession();
 
         TCPSession &operator=(const TCPSession &) = delete;
 
@@ -24,7 +24,7 @@ namespace network {
 
     private:
         const int _buf_size{1024};
-        int _sock;
+        HighLevelSocket _sock;
     };
 }
 
