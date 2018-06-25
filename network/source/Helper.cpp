@@ -23,7 +23,6 @@ namespace network {
 
         if (bytes_read <= 0) return bytes_read;
 
-
         ApplicationProtocolMessage ap{"."};
         ap.setPacket(packet);
 

@@ -26,10 +26,6 @@ HighLevelSocket::HighLevelSocket(int port, __socket_type type)
 HighLevelSocket::HighLevelSocket(int sock) : _sock{sock}
 {}
 
-/*HighLevelSocket::~HighLevelSocket()
-{
-   close(_sock);
-}*/
 
 int HighLevelSocket::close() {
     ::close(_sock);
@@ -129,12 +125,5 @@ const struct sockaddr_in& HighLevelSocket::getSockAddr() const noexcept
    return _addr;
 }
 
-
-HighLevelSocket::HighLevelSocket(HighLevelSocket&& arg)
-{
-  _sock =  arg._sock;
-   arg._sock = -1;
-
-}
 }
 
