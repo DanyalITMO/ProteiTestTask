@@ -20,8 +20,8 @@ public:
    explicit HighLevelSocket(int sock);
    HighLevelSocket(int port, __socket_type type);
 
-   HighLevelSocket(const HighLevelSocket&) = delete;
-   HighLevelSocket& operator=(const HighLevelSocket) = delete;
+   HighLevelSocket(const HighLevelSocket&) = default;
+   HighLevelSocket& operator=(const HighLevelSocket&) = default;
 
    HighLevelSocket(HighLevelSocket&&);
 //   HighLevelSocket& operator=(HighLevelSocket&&) = default;

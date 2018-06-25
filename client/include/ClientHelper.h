@@ -8,6 +8,8 @@
 #include <Helper.h>
 #include "string"
 #include "Settings.h"
+#include "UDPClient.h"
+#include "TCPClient.h"
 
 namespace client {
     void parseArgs(int argc, char *argv[]);

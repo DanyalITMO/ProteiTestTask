@@ -5,9 +5,11 @@
 #include <ApplicationProtocol.h>
 #include <Helper.h>
 #include "UDPIncomingMessage.h"
+#include "HighLevelSocket.h"
+
 namespace network {
 
-    UDPIncomingMessage::UDPIncomingMessage(const struct sockaddr_in &addr, int socket, std::string_view msg) : _addr{
+    UDPIncomingMessage::UDPIncomingMessage(const struct sockaddr_in &addr, HighLevelSocket socket, std::string_view msg) : _addr{
             addr}, _server_socket{socket}, _message{msg} {}
 
     std::string UDPIncomingMessage::getMessage() const {

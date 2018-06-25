@@ -7,8 +7,10 @@
 
 #include "string"
 #include <netinet/in.h>
+#include "HighLevelSocket.h"
+
 namespace network {
-    class Client {
+   class Client {
     public:
         Client(int, __socket_type);
 
@@ -26,7 +28,7 @@ namespace network {
 
     protected:
         bool _init{true};
-        int _sock;
+        HighLevelSocket _sock;
     };
 }
 #endif //PROTEITESTTASK_CLIENT_H

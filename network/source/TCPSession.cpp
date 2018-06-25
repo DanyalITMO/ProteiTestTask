@@ -21,7 +21,7 @@ TCPSession::TCPSession(HighLevelSocket&& sock) : _sock{std::move(sock)}
 std::string TCPSession::recv()
 {
    std::string msg;
-   int ret_code = recvApplication(_sock.getLowLevelSocket(), msg);
+   int ret_code = recvApplication(_sock, msg);
    if (ret_code < 0) {
       perror("tcp recv");
       throw std::runtime_error{"It's impossible to correctly accept data"};
@@ -31,7 +31,7 @@ std::string TCPSession::recv()
 
 void TCPSession::send(std::string msg)
 {
-   int ret_code = sendApplication(_sock.getLowLevelSocket(), msg.c_str());
+   int ret_code = sendApplication(_sock, msg.c_str());
 
    if (ret_code < 0) {
       perror("tcp send");

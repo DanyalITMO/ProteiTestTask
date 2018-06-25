@@ -7,11 +7,13 @@
 
 #include <netinet/in.h>
 #include <string>
+#include "HighLevelSocket.h"
+
 namespace network {
 
     class UDPIncomingMessage {
     public:
-        UDPIncomingMessage(const struct sockaddr_in &addr, int socket, std::string_view msg);
+        UDPIncomingMessage(const struct sockaddr_in &addr, HighLevelSocket socket, std::string_view msg);
 
         ~UDPIncomingMessage() = default;
 
@@ -25,7 +27,7 @@ namespace network {
 
     private:
         struct sockaddr_in _addr;
-        const int _server_socket;
+        HighLevelSocket _server_socket;
         std::string _message;
 
     };
