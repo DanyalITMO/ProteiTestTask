@@ -7,6 +7,7 @@
 #include "ServerHelper.h"
 #include "Statistic.h"
 #include "SyncOut.h"
+#include "SyncErr.h"
 
 namespace server {
 
@@ -35,7 +36,7 @@ void tcpConnection(int port)
    network::TCPServer tcp_server{port};
 
    if (!tcp_server.isInit()) {
-      std::cerr << "TCP server can not be created" << std::endl;
+      SyncErr{} << "TCP server can not be created" << std::endl;
       return;
    }
 
@@ -57,7 +58,7 @@ void tcpConnection(int port)
          }
       }
       catch (const std::runtime_error& ex) {
-         std::cerr << ex.what() << std::endl;
+         SyncErr{} << ex.what() << std::endl;
       }
    }
 
@@ -84,7 +85,7 @@ void udpConnection(int port)
       }
       catch (const std::exception& ex) {
          dataSocket.send("Error");
-         std::cerr << ex.what();
+         SyncErr{} << ex.what();
       }
    }
 }

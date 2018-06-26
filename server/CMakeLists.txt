@@ -7,7 +7,9 @@ find_package (Threads)
 
 set(SERVER_SOURCE
         source/ServerHelper.cpp
-        source/SyncOut.cpp source/Setting.cpp
+        source/SyncOut.cpp
+        source/SyncErr.cpp
+        source/Setting.cpp
         CACHE INTERNAL ""
         )
 include_directories(include)
