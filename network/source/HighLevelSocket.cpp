@@ -76,30 +76,18 @@ void HighLevelSocket::recvAll(std::string& msg, struct sockaddr_in* addr)
    msg = temp;
 }
 
+
 void HighLevelSocket::sendall(const std::string& msg, struct sockaddr_in* addr)
 {
    int n;
-   std::string temp;
    int max_udp_size = 65507;  //64kb - ip (20 )- udp(8) headers
-   if (msg.size() > max_udp_size) {
-      int chunk_count = msg.size() / max_udp_size;
-      int send_position = 0;
-      for (int i = 0; i < chunk_count; i++) {
-         send_position = i * max_udp_size;
-         auto n = sendMessage(msg.substr(send_position, max_udp_size), addr);
-         if (n == -1) {
-            perror("HighLevelSocket::recvAll");
-            throw std::runtime_error{"Сan not send the whole package"};
-         }
-      }
-      send_position += max_udp_size;
-      n = sendMessage(msg.substr(send_position, msg.size() - send_position),
-                           addr);
-   }
-   else {
-      n = sendMessage(msg, addr);
-   }
 
+   int chunk_count = static_cast<int>(msg.size() / max_udp_size);
+   for (int i = 0; i < chunk_count && n > 0; i++) {
+      n = sendMessage(msg.substr(i * max_udp_size, max_udp_size), addr);
+   }
+   n = sendMessage(msg.substr(chunk_count * max_udp_size, msg.size() - (chunk_count * max_udp_size)),
+                   addr);
    if (n == -1) {
       perror("HighLevelSocket::recvAll");
       throw std::runtime_error{"Сan not send the whole package"};
