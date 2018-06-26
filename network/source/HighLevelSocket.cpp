@@ -51,7 +51,7 @@ int HighLevelSocket::recvAll(std::string& msg, struct sockaddr_in* addr)
 
    auto data_size = ApplicationProtocolMessage::getSize(temp);
 
-   while (temp.size() < data_size) {
+   while (temp.size() < data_size + ApplicationProtocolMessage::getLenghtHeaderSize()) {
       if (addr != nullptr) {
          socklen_t size = sizeof(*addr);
          bytes_read = recvfrom(_sock, _buf, _buf_size, 0, (struct sockaddr*) addr, &size);
