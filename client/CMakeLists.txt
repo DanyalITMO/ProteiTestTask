@@ -24,4 +24,4 @@ set(TEST_CLIENT_SOURCES
         ${gtestMain}
         )
 add_executable(${TesterName} ${TEST_CLIENT_SOURCES})
-target_link_libraries(${TesterName} #[[gtest_main]] gtest network)
+target_link_libraries(${TesterName}  gtest network)

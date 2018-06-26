@@ -138,7 +138,10 @@ void udpConnection(int port) {
     network::UDPServer udp_server{port};
 
     if (!udp_server.isInit())
+    {
+        std::cerr << "UDP server can not be created" << std::endl;
         return;
+    }
 
     auto dataSocket = udp_server.recv();
     auto r = dataSocket.getMessage();
