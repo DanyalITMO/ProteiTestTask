@@ -32,7 +32,7 @@ namespace server {
             return ret;
         }
 
-        decltype(auto) getMin() const {
+        decltype(auto) getMax() const {
             if (_numbers.empty()) throw std::runtime_error{"Static has not data"};
             return *std::cbegin(_numbers);
         }
@@ -45,7 +45,7 @@ namespace server {
             return ret;
         }
 
-        decltype(auto) getMax() const {
+        decltype(auto) getMin() const {
             if (_numbers.empty()) throw std::runtime_error{"Static has not data"};
             return *std::prev(std::cend(_numbers));
         }
