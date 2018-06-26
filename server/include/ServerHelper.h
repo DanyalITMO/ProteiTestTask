@@ -10,19 +10,20 @@
 #include <list>
 
 namespace server {
-    template<typename T = unsigned, template<typename, typename...> class CONT = std::list>
-    decltype(auto) filterNumber(const std::string &str) {
-        CONT<T> ret;
-        std::regex r{R"((\d))"};
-        for (std::sregex_iterator pos(std::cbegin(str), std::cend(str), r); pos != std::sregex_iterator{}; ++pos) {
-            ret.push_back(std::stoi(pos->str(1)));
-        }
-
-        return ret;
+template<typename T = unsigned, template<typename, typename...> class CONT = std::list>
+decltype(auto) filterNumber(const std::string &str) {
+    CONT<T> ret;
+    std::regex r{R"((\d))"};
+    for (std::sregex_iterator pos(std::cbegin(str), std::cend(str), r); pos != std::sregex_iterator{}; ++pos) {
+        ret.push_back(std::stoi(pos->str(1)));
     }
 
-    void parseArgs(int argc, char* argv[]);
-    void parseLine(std::string_view);
+    return ret;
+}
+
+void parseArgs(int argc, char *argv[]);
+
+void parseLine(std::string_view);
 
 }
 #endif //SERVER_HELPER_H

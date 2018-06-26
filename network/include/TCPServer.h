@@ -15,16 +15,17 @@
 #include <list>
 #include "Server.h"
 #include <optional>
+
 namespace network {
 
-    class TCPServer : public Server {
-    public:
-        explicit TCPServer(int port);
+class TCPServer : public Server {
+public:
+    explicit TCPServer(int port);
 
-        virtual ~TCPServer() = default;
+    virtual ~TCPServer() = default;
 
-        TCPSession accept();
-    };
+    TCPSession accept();
+};
 }
 
 #endif //SERVER_SOCKETWRAPPER_H

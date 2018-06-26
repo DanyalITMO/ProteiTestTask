@@ -10,16 +10,16 @@
 
 namespace network {
 
-    enum class Protocol {
-        TCP,
-        UDP
-    };
+enum class Protocol {
+    TCP,
+    UDP
+};
 
-    Protocol stringToProtocol(std::string_view);
+Protocol stringToProtocol(std::string_view);
 
-    std::string recvApplication(HighLevelSocket& s, struct sockaddr_in *addr = nullptr);
+std::string recvApplication(HighLevelSocket &s, struct sockaddr_in *addr = nullptr);
 
-    void sendApplication(HighLevelSocket& s, const std::string &msg, struct sockaddr_in *addr = nullptr);
+void sendApplication(HighLevelSocket &s, const std::string &msg, struct sockaddr_in *addr = nullptr);
 
 }
 #endif //PROTEITESTTASK_HELPER_H

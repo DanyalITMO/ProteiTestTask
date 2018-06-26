@@ -10,21 +10,21 @@
 
 namespace network {
 
-    class TCPSession {
-    public:
-        explicit TCPSession(HighLevelSocket&& socket);
+class TCPSession {
+public:
+    explicit TCPSession(HighLevelSocket &&socket);
 
-        std::string recv();
+    std::string recv();
 
-        void send(const std::string&);
+    void send(const std::string &);
 
-        TCPSession &operator=(const TCPSession &) = delete;
+    TCPSession &operator=(const TCPSession &) = delete;
 
-        TCPSession(const TCPSession &) = delete;
+    TCPSession(const TCPSession &) = delete;
 
-    private:
-        HighLevelSocket _sock;
-    };
+private:
+    HighLevelSocket _sock;
+};
 }
 
 #endif

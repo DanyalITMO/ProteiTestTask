@@ -13,14 +13,12 @@
 
 namespace network {
 
-UDPServer::UDPServer(int port) : Server{port, SOCK_DGRAM}
-{}
+UDPServer::UDPServer(int port) : Server{port, SOCK_DGRAM} {}
 
-UDPIncomingMessage UDPServer::recv()
-{
-   struct sockaddr_in addr;
-   std::string msg = recvApplication(_listener, &addr);
+UDPIncomingMessage UDPServer::recv() {
+    struct sockaddr_in addr;
+    std::string msg = recvApplication(_listener, &addr);
 
-   return UDPIncomingMessage{addr, _listener, msg};
+    return UDPIncomingMessage{addr, _listener, msg};
 }
 }

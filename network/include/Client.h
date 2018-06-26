@@ -10,25 +10,25 @@
 #include "HighLevelSocket.h"
 
 namespace network {
-   class Client {
-    public:
-        Client(int, __socket_type);
+class Client {
+public:
+    Client(int, __socket_type);
 
-        virtual ~Client();
+    virtual ~Client();
 
-        virtual void send(const std::string &msg);
+    virtual void send(const std::string &msg);
 
-        virtual std::string recv();
+    virtual std::string recv();
 
-        virtual bool isInit() const noexcept;
+    virtual bool isInit() const noexcept;
 
-        Client &operator=(const Client &) = delete;
+    Client &operator=(const Client &) = delete;
 
-        Client(const Client &) = delete;
+    Client(const Client &) = delete;
 
-    protected:
-        bool _init{true};
-        HighLevelSocket _sock;
-    };
+protected:
+    bool _init{true};
+    HighLevelSocket _sock;
+};
 }
 #endif //PROTEITESTTASK_CLIENT_H

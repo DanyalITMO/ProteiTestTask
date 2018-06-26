@@ -8,7 +8,7 @@
 namespace server {
 
 SyncErr::~SyncErr() {
-   std::lock_guard<std::mutex> lock(_mutex);
-   std::cerr << this->str();
+    std::lock_guard<std::mutex> lock(_mutex);
+    std::cerr << this->str();
 }
 }

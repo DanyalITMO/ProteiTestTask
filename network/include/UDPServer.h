@@ -14,15 +14,16 @@
 
 namespace network {
 
-    class UDPServer : public Server {
-    public:
-        explicit UDPServer(int port);
+class UDPServer : public Server {
+public:
+    explicit UDPServer(int port);
 
-        UDPIncomingMessage recv();
+    UDPIncomingMessage recv();
 
-    private:
-        const int _buf_size{1024};
-    };
+private:
+    const int _buf_size{1024};
+};
+
 }
 
 #endif //PROTEITESTTASK_UDPSERVER_H

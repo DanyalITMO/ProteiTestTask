@@ -12,5 +12,5 @@
 
 namespace network {
 
-    UDPClient::UDPClient(int port) : Client{port, SOCK_DGRAM} {}
+UDPClient::UDPClient(int port) : Client{port, SOCK_DGRAM} {}
 }

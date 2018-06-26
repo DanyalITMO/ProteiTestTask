@@ -8,117 +8,106 @@
 
 namespace network {
 
-HighLevelSocket::HighLevelSocket(int port, __socket_type type)
-{
-   _sock = socket(AF_INET, type, 0);
+HighLevelSocket::HighLevelSocket(int port, __socket_type type) {
+    _sock = socket(AF_INET, type, 0);
 
-   if (_sock < 0) {
-      perror("socket");
-      _init = false;
-      return;
-   }
+    if (_sock < 0) {
+        perror("HighLevelSocket::HighLevelSocket");
+        _init = false;
+        return;
+    }
 
-   _addr.sin_family = AF_INET;
-   _addr.sin_port = htons(port);
-   _addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    _addr.sin_family = AF_INET;
+    _addr.sin_port = htons(port);
+    _addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
 }
 
-HighLevelSocket::HighLevelSocket(int sock) : _sock{sock}
-{}
+HighLevelSocket::HighLevelSocket(int sock) : _sock{sock} {}
 
-int HighLevelSocket::close()
-{
-   int ret = ::close(_sock);
-   if (ret < 0)
-      perror("HighLevelSocket::close()");
-   return ret;
+int HighLevelSocket::close() {
+    int ret = ::close(_sock);
+    if (ret < 0)
+        perror("HighLevelSocket::close()");
+    return ret;
 }
 
-std::string HighLevelSocket::recvMessage(std::size_t min_size, struct sockaddr_in* addr)
-{
-   std::string ret;
-   ssize_t bytes_read;
+std::string HighLevelSocket::recvMessage(std::size_t min_size, struct sockaddr_in *addr) {
+    std::string ret;
+    ssize_t bytes_read;
 
-   while (ret.size() < min_size) {
-      if (addr != nullptr) {
-         socklen_t size = sizeof(*addr);
-         bytes_read = recvfrom(_sock, _buf, _buf_size, 0, (struct sockaddr*) addr, &size);
-      }
-      else {
-         bytes_read = ::recv(_sock, _buf, _buf_size, 0);
-      }
-      if (bytes_read <= 0) {
-         perror("HighLevelSocket::recvMessage");
-         throw std::runtime_error{"Сan not receive the whole package"};
-      }
+    while (ret.size() < min_size) {
+        if (addr != nullptr) {
+            socklen_t size = sizeof(*addr);
+            bytes_read = recvfrom(_sock, _buf, _buf_size, 0, (struct sockaddr *) addr, &size);
+        } else {
+            bytes_read = ::recv(_sock, _buf, _buf_size, 0);
+        }
+        if (bytes_read <= 0) {
+            perror("HighLevelSocket::recvMessage");
+            throw std::runtime_error{"Сan not receive the whole package"};
+        }
 
-      ret += std::string(_buf, static_cast<size_t>(bytes_read));
-   }
+        ret += std::string(_buf, static_cast<size_t>(bytes_read));
+    }
 
-   return ret;
+    return ret;
 }
 
-std::string HighLevelSocket::recvAll(struct sockaddr_in* addr)
-{
-   auto packet = recvMessage(ApplicationProtocolMessage::getLenghtHeaderSize(), addr);
+std::string HighLevelSocket::recvAll(struct sockaddr_in *addr) {
+    auto packet = recvMessage(ApplicationProtocolMessage::getLenghtHeaderSize(), addr);
 
-   auto data_size = ApplicationProtocolMessage::getSize(packet);
+    auto data_size = ApplicationProtocolMessage::getSize(packet);
 
-   if (packet.size() < data_size + ApplicationProtocolMessage::getLenghtHeaderSize())
-      packet += recvMessage(
-            data_size + ApplicationProtocolMessage::getLenghtHeaderSize() - packet.size(),
-            addr);
+    if (packet.size() < data_size + ApplicationProtocolMessage::getLenghtHeaderSize())
+        packet += recvMessage(
+                data_size + ApplicationProtocolMessage::getLenghtHeaderSize() - packet.size(),
+                addr);
 
-   return packet;
+    return packet;
 }
 
-void HighLevelSocket::sendall(const std::string& msg, struct sockaddr_in* addr)
-{
-   std::size_t max_udp_size = 65507;  //64kb - ip (20 )- udp(8) headers
+void HighLevelSocket::sendall(const std::string &msg, struct sockaddr_in *addr) {
+    std::size_t max_udp_size = 65507;  //64kb - ip (20 )- udp(8) headers
 
-   auto chunk_count = static_cast<std::size_t>(msg.size() / max_udp_size);
+    auto chunk_count = static_cast<std::size_t>(msg.size() / max_udp_size);
 
-   for (std::size_t i = 0; i < chunk_count; i++) {
-      sendMessage(msg.substr(i * max_udp_size, max_udp_size), addr);
-   }
-   sendMessage(msg.substr(chunk_count * max_udp_size,
-                          msg.size() - (chunk_count * max_udp_size)), addr);
+    for (std::size_t i = 0; i < chunk_count; i++) {
+        sendMessage(msg.substr(i * max_udp_size, max_udp_size), addr);
+    }
+    sendMessage(msg.substr(chunk_count * max_udp_size,
+                           msg.size() - (chunk_count * max_udp_size)), addr);
 }
 
-void HighLevelSocket::sendMessage(const std::string& msg, struct sockaddr_in* addr)
-{
-   std::size_t total = 0;
-   ssize_t n;
+void HighLevelSocket::sendMessage(const std::string &msg, struct sockaddr_in *addr) {
+    std::size_t total = 0;
+    ssize_t n;
 
-   while (total < msg.size()) {
-      if (addr != nullptr)
-         n = sendto(_sock, msg.substr(total, msg.size() - total).c_str(), msg.size() - total, 0,
-                    (struct sockaddr*) addr, sizeof(*addr));
-      else
-         n = send(_sock, msg.substr(total, msg.size() - total).c_str(), msg.size() - total,
-                  0);
+    while (total < msg.size()) {
+        if (addr != nullptr)
+            n = sendto(_sock, msg.substr(total, msg.size() - total).c_str(), msg.size() - total, 0,
+                       (struct sockaddr *) addr, sizeof(*addr));
+        else
+            n = send(_sock, msg.substr(total, msg.size() - total).c_str(), msg.size() - total,
+                     0);
 
-      if (n == -1) {
-         perror("HighLevelSocket::sendAll");
-         throw std::runtime_error{"Сan not send the whole package"};
-      }
-      total += n;
-   }
+        if (n == -1) {
+            perror("HighLevelSocket::sendAll");
+            throw std::runtime_error{"Сan not send the whole package"};
+        }
+        total += n;
+    }
 }
 
-int HighLevelSocket::getLowLevelSocket() const noexcept
-{
-   return _sock;
+int HighLevelSocket::getLowLevelSocket() const noexcept {
+    return _sock;
 }
 
-const struct sockaddr_in& HighLevelSocket::getSockAddr() const noexcept
-{
-   return _addr;
+const struct sockaddr_in &HighLevelSocket::getSockAddr() const noexcept {
+    return _addr;
 }
 
-bool HighLevelSocket::init() const noexcept
-{
-   return _init;
+bool HighLevelSocket::init() const noexcept {
+    return _init;
 }
 
 }

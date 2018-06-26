@@ -10,5 +10,5 @@
 #include <iostream>
 
 namespace network {
-    TCPClient::TCPClient(int port) : Client{port, SOCK_STREAM} {}
+TCPClient::TCPClient(int port) : Client{port, SOCK_STREAM} {}
 }

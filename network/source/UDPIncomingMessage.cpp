@@ -9,14 +9,15 @@
 
 namespace network {
 
-    UDPIncomingMessage::UDPIncomingMessage(const struct sockaddr_in &addr, HighLevelSocket socket, std::string_view msg) : _addr{
-            addr}, _server_socket{socket}, _message{msg} {}
+UDPIncomingMessage::UDPIncomingMessage(const struct sockaddr_in &addr, HighLevelSocket socket, std::string_view msg)
+        : _addr{
+        addr}, _server_socket{socket}, _message{msg} {}
 
-    std::string UDPIncomingMessage::getMessage() const {
-        return _message;
-    }
+std::string UDPIncomingMessage::getMessage() const {
+    return _message;
+}
 
-    void UDPIncomingMessage::send(const std::string &msg) {
-        sendApplication(_server_socket, msg.c_str(), &_addr);
-    }
+void UDPIncomingMessage::send(const std::string &msg) {
+    sendApplication(_server_socket, msg.c_str(), &_addr);
+}
 }

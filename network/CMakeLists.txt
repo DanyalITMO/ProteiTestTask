@@ -29,6 +29,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/in
 
 set(TEST_SOURCES
         tests/ApplicationProtocolTester.cpp
+        tests/NetworkTester.cpp
         ${gtestMain}
         )
 

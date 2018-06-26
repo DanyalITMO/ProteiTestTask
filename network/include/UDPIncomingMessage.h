@@ -11,26 +11,26 @@
 
 namespace network {
 
-    class UDPIncomingMessage {
-    public:
-        UDPIncomingMessage(const struct sockaddr_in &addr, HighLevelSocket socket, std::string_view msg);
+class UDPIncomingMessage {
+public:
+    UDPIncomingMessage(const struct sockaddr_in &addr, HighLevelSocket socket, std::string_view msg);
 
-        ~UDPIncomingMessage() = default;
+    ~UDPIncomingMessage() = default;
 
-        std::string getMessage() const;
+    std::string getMessage() const;
 
-        void send(const std::string &message);
+    void send(const std::string &message);
 
-        UDPIncomingMessage &operator=(const UDPIncomingMessage &) = delete;
+    UDPIncomingMessage &operator=(const UDPIncomingMessage &) = delete;
 
-        UDPIncomingMessage(const UDPIncomingMessage &) = delete;
+    UDPIncomingMessage(const UDPIncomingMessage &) = delete;
 
-    private:
-        struct sockaddr_in _addr;
-        HighLevelSocket _server_socket;
-        std::string _message;
+private:
+    struct sockaddr_in _addr;
+    HighLevelSocket _server_socket;
+    std::string _message;
 
-    };
+};
 }
 
 #endif //PROTEITESTTASK_UDPSESSION_H

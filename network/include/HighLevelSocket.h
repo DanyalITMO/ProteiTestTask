@@ -17,37 +17,41 @@ namespace network {
 class HighLevelSocket {
 public:
 
-   explicit HighLevelSocket(int sock);
-   HighLevelSocket(int port, __socket_type type);
+    explicit HighLevelSocket(int sock);
 
-   HighLevelSocket(const HighLevelSocket&) = default;
-   HighLevelSocket& operator=(const HighLevelSocket&) = default;
+    HighLevelSocket(int port, __socket_type type);
 
-   ~HighLevelSocket() = default;
+    HighLevelSocket(const HighLevelSocket &) = default;
 
-   int close();
+    HighLevelSocket &operator=(const HighLevelSocket &) = default;
 
-   bool init() const noexcept;
+    ~HighLevelSocket() = default;
 
-   int getLowLevelSocket() const noexcept;
-   const struct sockaddr_in& getSockAddr() const noexcept;
+    int close();
 
-   std::string recvAll(struct sockaddr_in* addr = nullptr);
-   void sendall(const std::string& msg, struct sockaddr_in* addr = nullptr);
+    bool init() const noexcept;
+
+    int getLowLevelSocket() const noexcept;
+
+    const struct sockaddr_in &getSockAddr() const noexcept;
+
+    std::string recvAll(struct sockaddr_in *addr = nullptr);
+
+    void sendall(const std::string &msg, struct sockaddr_in *addr = nullptr);
 
 private:
 
-   std::string recvMessage(std::size_t min_size, struct sockaddr_in* addr);
+    std::string recvMessage(std::size_t min_size, struct sockaddr_in *addr);
 
-   void sendMessage(const std::string& msg, struct sockaddr_in* addr = nullptr);
+    void sendMessage(const std::string &msg, struct sockaddr_in *addr = nullptr);
 
-   constexpr static int _buf_size{65536};
-   char _buf[_buf_size];
+    constexpr static int _buf_size{65536};
+    char _buf[_buf_size];
 
-   int _sock;
-   struct sockaddr_in _addr;
+    int _sock;
+    struct sockaddr_in _addr;
 
-   bool _init{true};
+    bool _init{true};
 };
 }
 

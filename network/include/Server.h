@@ -10,23 +10,23 @@
 
 namespace network {
 
-    class Server {
-    public:
-        explicit Server(int port, __socket_type type) noexcept;
+class Server {
+public:
+    explicit Server(int port, __socket_type type) noexcept;
 
-        virtual ~Server();
+    virtual ~Server();
 
-        bool isInit() const noexcept;
+    bool isInit() const noexcept;
 
-        Server &operator=(const Server &) = delete;
+    Server &operator=(const Server &) = delete;
 
-        Server(const Server &) = delete;
+    Server(const Server &) = delete;
 
-    protected:
-        bool _init{true};
-        HighLevelSocket _listener;
+protected:
+    bool _init{true};
+    HighLevelSocket _listener;
 
 
-    };
+};
 }
 #endif //PROTEITESTTASK_SERVER_H

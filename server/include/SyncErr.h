@@ -11,9 +11,9 @@
 namespace server {
 
 class SyncErr : public std::ostringstream {
-   std::mutex _mutex;
+    std::mutex _mutex;
 public:
-   ~SyncErr();
+    ~SyncErr();
 };
 
 }
