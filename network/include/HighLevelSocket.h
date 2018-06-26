@@ -32,7 +32,7 @@ public:
    int getLowLevelSocket() const noexcept;
    const struct sockaddr_in& getSockAddr() const noexcept;
 
-   void recvAll(std::string& msg, struct sockaddr_in* addr = nullptr);
+   std::string recvAll(struct sockaddr_in* addr = nullptr);
    void sendall(const std::string& msg, struct sockaddr_in* addr = nullptr);
 
 private:

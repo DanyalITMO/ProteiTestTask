@@ -20,8 +20,7 @@ Protocol stringToProtocol(std::string_view str)
 
 std::string recvApplication(HighLevelSocket& s, struct sockaddr_in* addr)
 {
-   std::string packet_str;
-   s.recvAll(packet_str, addr);
+   std::string packet_str = s.recvAll(addr);
 
    auto packet = ApplicationProtocolMessage::strToPacket(packet_str);
 
