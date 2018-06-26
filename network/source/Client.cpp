@@ -22,10 +22,7 @@ namespace network {
     }
 
     std::string Client::recv() {
-        std::string msg;
-        recvApplication(_sock, msg);
-
-        return msg;
+       return recvApplication(_sock);
     }
 
     Client::~Client() {

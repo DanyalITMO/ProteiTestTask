@@ -17,13 +17,13 @@ namespace network {
             throw std::runtime_error{"Incorrect protocol type"};
     }
 
-    void recvApplication(HighLevelSocket& s, std::string &msg, struct sockaddr_in *addr) {
+    std::string recvApplication(HighLevelSocket& s, struct sockaddr_in *addr) {
         std::string packet_str;
         s.recvAll(packet_str, addr);
 
         auto packet =ApplicationProtocolMessage::strToPacket(packet_str);
 
-        msg = packet.getData();
+        return packet.getData();
     }
 
     void sendApplication(HighLevelSocket& s, const std::string &msg, struct sockaddr_in *addr) {

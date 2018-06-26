@@ -15,15 +15,12 @@
 
 namespace network {
 
-TCPSession::TCPSession(HighLevelSocket&& sock) : _sock{std::move(sock)}
+TCPSession::TCPSession(HighLevelSocket&& sock) : _sock{sock}
 {}
 
 std::string TCPSession::recv()
 {
-   std::string msg;
-   recvApplication(_sock, msg);
-
-   return msg;
+   return recvApplication(_sock);
 }
 
 void TCPSession::send(const std::string& msg)

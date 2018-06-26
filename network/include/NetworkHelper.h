@@ -17,7 +17,7 @@ namespace network {
 
     Protocol stringToProtocol(std::string_view);
 
-    void recvApplication(HighLevelSocket& s, std::string &msg, struct sockaddr_in *addr = nullptr);
+    std::string recvApplication(HighLevelSocket& s, struct sockaddr_in *addr = nullptr);
 
     void sendApplication(HighLevelSocket& s, const std::string &msg, struct sockaddr_in *addr = nullptr);
 
