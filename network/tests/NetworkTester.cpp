@@ -5,6 +5,9 @@
 #include <thread>
 #include <condition_variable>
 #include <atomic>
+#include <functional>
+#include <UDPServer.h>
+#include <UDPClient.h>
 #include "gtest/gtest.h"
 #include "Client.h"
 #include "TCPServer.h"
@@ -28,6 +31,28 @@ std::string random_string(size_t length) {
 }
 
 
+class NetworkTester : public ::testing::Test {
+protected:
+    int port;
+    std::function<void(int)> _server_handler;
+
+    std::unique_ptr<Client> _client;
+    std::thread _thread;
+
+public:
+    void SetUp() override {
+        _thread = std::thread(_server_handler, port);
+    }
+
+    void TearDown() override {
+        if (_thread.joinable())
+            _thread.join();
+    }
+
+
+    virtual void checker(const std::string &msg) = 0;
+};
+
 void tcpConnection(int port) {
     network::TCPServer tcp_server{port};
 
@@ -35,7 +60,6 @@ void tcpConnection(int port) {
         std::cerr << "TCP server can not be created" << std::endl;
         return;
     }
-
 
     try {
 
@@ -54,29 +78,15 @@ void tcpConnection(int port) {
 }
 
 
-class NetworkTester : public ::testing::Test {
-protected:
-    const int port;
-
-    std::unique_ptr<Client> _client;
-    std::thread _thread;
-
+class TcpTester : public NetworkTester {
 public:
 
-    NetworkTester() : port{3425} {
+    TcpTester() {
+        port = 3425;
+        _server_handler = tcpConnection;
     }
 
-    void SetUp() override {
-        _thread = std::thread(tcpConnection, port);
-    }
-
-    void TearDown() override {
-        if (_thread.joinable())
-            _thread.join();
-    }
-
-
-    void checker(const std::string &msg) {
+    virtual void checker(const std::string &msg) {
 
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         _client = std::make_unique<TCPClient>(port);
@@ -86,41 +96,117 @@ public:
 
         EXPECT_EQ(msg, recv_msg);
     }
+
 };
 
 
-TEST_F(NetworkTester, IfPassOnlyCharacterShouldWork) {
+TEST_F(TcpTester, IfPassOnlyCharacterShouldWork) {
     auto msg = "qwerty";
     checker(msg);
 }
 
-TEST_F(NetworkTester, ShouldWorkIfMessageSmallSize) {
+TEST_F(TcpTester, ShouldWorkIfMessageSmallSize) {
     auto msg = random_string(8);
     checker(msg);
 }
 
-TEST_F(NetworkTester, ShouldWorkIfMessageMediumSize) {
+TEST_F(TcpTester, ShouldWorkIfMessageMediumSize) {
     auto msg = random_string(1000);
     checker(msg);
 }
 
-TEST_F(NetworkTester, ShouldWorkIfMessagBigSize) {
+TEST_F(TcpTester, ShouldWorkIfMessagBigSize) {
     auto msg = random_string(10000);
     checker(msg);
 }
 
-TEST_F(NetworkTester, ShouldWorkIfMessageVeryBigSize) {
+TEST_F(TcpTester, ShouldWorkIfMessageVeryBigSize) {
     auto msg = random_string(65536);
     checker(msg);
 }
 
 
-TEST_F(NetworkTester, ShouldThrowExceptionIfMessagOverSizeSize) {
+TEST_F(TcpTester, ShouldThrowExceptionIfMessagOverSizeSize) {
     auto msg = random_string(65537);
     ASSERT_ANY_THROW(checker(msg));
     _client->send("placeholder");
     _client->recv();
 }
+
+void udpConnection(int port) {
+
+    network::UDPServer udp_server{port};
+
+    if (!udp_server.isInit())
+        return;
+
+    auto dataSocket = udp_server.recv();
+    auto r = dataSocket.getMessage();
+
+    try {
+        dataSocket.send(r);
+    }
+    catch (const std::exception &ex) {
+        dataSocket.send("Error");
+        std::cerr << ex.what();
+    }
+}
+
+class UdpTester : public NetworkTester {
+public:
+
+    UdpTester() {
+        port = 3426;
+        _server_handler = udpConnection;
+    }
+
+
+    virtual void checker(const std::string &msg) {
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        _client = std::make_unique<UDPClient>(port);
+
+        _client->send(msg);
+        auto recv_msg = _client->recv();
+
+        EXPECT_EQ(msg, recv_msg);
+    }
+};
+
+
+TEST_F(UdpTester, IfPassOnlyCharacterShouldWork) {
+    auto msg = "qwerty";
+    checker(msg);
+}
+
+TEST_F(UdpTester, ShouldWorkIfMessageSmallSize) {
+    auto msg = random_string(8);
+    checker(msg);
+}
+
+TEST_F(UdpTester, ShouldWorkIfMessageMediumSize) {
+    auto msg = random_string(1000);
+    checker(msg);
+}
+
+TEST_F(UdpTester, ShouldWorkIfMessagBigSize) {
+    auto msg = random_string(10000);
+    checker(msg);
+}
+
+TEST_F(UdpTester, ShouldWorkIfMessageVeryBigSize) {
+    auto msg = random_string(65536);
+    checker(msg);
+}
+
+
+TEST_F(UdpTester, ShouldThrowExceptionIfMessagOverSizeSize) {
+    auto msg = random_string(65537);
+    ASSERT_ANY_THROW(checker(msg));
+    _client->send("placeholder");
+    _client->recv();
+}
+
 
 }
 
