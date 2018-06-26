@@ -46,10 +46,21 @@ void tcpConnection(int port) {
 
             auto session = tcp_server.accept();
             try {
+
+#ifdef SESSION
+                while (true) {
+                    auto r = session.recv();
+                    if(r == "!stop") break;
+
+                    commonHandler(r);
+                    session.send(r);
+                }
+#else
                 auto r = session.recv();
 
                 commonHandler(r);
                 session.send(r);
+#endif
             }
             catch (const std::runtime_error &ex) {
                 session.send(std::string("Error:") + ex.what());

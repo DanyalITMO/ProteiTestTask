@@ -67,6 +67,7 @@ std::string HighLevelSocket::recvAll(struct sockaddr_in *addr) {
 }
 
 void HighLevelSocket::sendall(const std::string &msg, struct sockaddr_in *addr) {
+
     std::size_t max_udp_size = 65507;  //64kb - ip (20 )- udp(8) headers
 
     auto chunk_count = static_cast<std::size_t>(msg.size() / max_udp_size);

@@ -8,8 +8,8 @@ int main(int argc, char *argv[]) {
     parseArgs(argc, argv);
 
     std::string msg;
+    auto client = makeClient(Setting::Instance().getProtocol());
     while (true) {
-        auto client = makeClient(Setting::Instance().getProtocol());
         if (client == nullptr) {
             std::cerr << "The client was not created\n";
             return 1;
