@@ -29,7 +29,7 @@ std::string TCPSession::recv()
    return msg;
 }
 
-void TCPSession::send(std::string msg)
+void TCPSession::send(const std::string& msg)
 {
    int ret_code = sendApplication(_sock, msg.c_str());
 

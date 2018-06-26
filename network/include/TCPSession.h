@@ -16,14 +16,13 @@ namespace network {
 
         std::string recv();
 
-        void send(std::string);
+        void send(const std::string&);
 
         TCPSession &operator=(const TCPSession &) = delete;
 
         TCPSession(const TCPSession &) = delete;
 
     private:
-        const int _buf_size{1024};
         HighLevelSocket _sock;
     };
 }
