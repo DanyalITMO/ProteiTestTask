@@ -18,17 +18,16 @@ namespace network {
     }
 
     int recvApplication(HighLevelSocket& s, std::string &msg, struct sockaddr_in *addr) {
-        std::string packet;
-        int bytes_read = s.recvAll(packet, addr);
+        std::string packet_str;
+        int bytes_read = s.recvAll(packet_str, addr);
 
         if (bytes_read <= 0) return bytes_read;
 
-        ApplicationProtocolMessage ap{"."};
-        ap.setPacket(packet);
+        auto packet =ApplicationProtocolMessage::strToPacket(packet_str);
 
-        msg = ap.getData();
+        msg = packet.getData();
 
-        return msg.size();
+        return static_cast<int>(msg.size());
     }
     int sendApplication(HighLevelSocket& s, const std::string &msg, struct sockaddr_in *addr) {
         ApplicationProtocolMessage ap{msg};

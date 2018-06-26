@@ -8,31 +8,33 @@
 #include <string>
 
 namespace network {
-    class ApplicationProtocolMessage {
-    public:
-        static std::size_t getSize(const std::string &);
+class ApplicationProtocolMessage {
+public:
+   ApplicationProtocolMessage(const std::string&);
 
-        static std::size_t getLenghtHeaderSize();
+   static ApplicationProtocolMessage strToPacket(const std::string&);
 
-        ApplicationProtocolMessage(const std::string &);
+   static std::size_t getSize(const std::string&);
 
-        std::string getPacket() const noexcept;
+   static std::size_t getLenghtHeaderSize();
 
-        std::string getData() const noexcept;
+   std::string getPacket() const noexcept;
 
-        std::string getHeader() const noexcept;
+   std::string getData() const noexcept;
 
-        std::size_t getSize() const noexcept;
+   std::string getHeader() const noexcept;
 
-        void setPacket(const std::string &);
+   std::size_t getSize() const noexcept;
 
+//   void setPacket(const std::string&);
 
-    private:
+private:
 
-        static unsigned _lenght_size;
-        std::size_t _msg_size;
-        std::string _header;
-        std::string _msg;
-    };
+   ApplicationProtocolMessage() = default;
+   static unsigned _lenght_size;
+   std::size_t _msg_size;
+   std::string _header;
+   std::string _msg;
+};
 }
 #endif //PROTEITESTTASK_APPLICATIONPROTOCOL_H
