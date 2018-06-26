@@ -17,8 +17,6 @@ namespace network {
     }
 
     void UDPIncomingMessage::send(const std::string &msg) {
-        int ret_code = sendApplication(_server_socket, msg.c_str(), &_addr);
-        if (ret_code < 0)
-            throw std::runtime_error{"It's impossible to correctly accept data"};
+        sendApplication(_server_socket, msg.c_str(), &_addr);
     }
 }

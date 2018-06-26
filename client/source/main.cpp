@@ -17,9 +17,18 @@ int main(int argc, char* argv[])
          std::cerr<<"The client was not created\n";
          return 1;
       }
-      std::cin>>msg;
-      client->send(msg);
-      std::cout << client->recv() << std::endl;
+
+      try {
+         std::cin>>msg;
+         client->send(msg);
+         std::cout << client->recv() << std::endl;
+      }
+      catch (std::runtime_error& er)
+      {
+         std::cerr<<er.what();
+      }
+
+
    }
 
    return 0;

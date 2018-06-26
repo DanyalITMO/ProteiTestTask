@@ -12,7 +12,7 @@ namespace network {
 
     class Server {
     public:
-        explicit Server(int port, __socket_type type);
+        explicit Server(int port, __socket_type type) noexcept;
 
         virtual ~Server();
 

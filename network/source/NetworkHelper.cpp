@@ -17,24 +17,18 @@ namespace network {
             throw std::runtime_error{"Incorrect protocol type"};
     }
 
-    int recvApplication(HighLevelSocket& s, std::string &msg, struct sockaddr_in *addr) {
+    void recvApplication(HighLevelSocket& s, std::string &msg, struct sockaddr_in *addr) {
         std::string packet_str;
-        int bytes_read = s.recvAll(packet_str, addr);
-
-        if (bytes_read <= 0) return bytes_read;
+        s.recvAll(packet_str, addr);
 
         auto packet =ApplicationProtocolMessage::strToPacket(packet_str);
 
         msg = packet.getData();
-
-        return static_cast<int>(msg.size());
     }
-    int sendApplication(HighLevelSocket& s, const std::string &msg, struct sockaddr_in *addr) {
+
+    void sendApplication(HighLevelSocket& s, const std::string &msg, struct sockaddr_in *addr) {
         ApplicationProtocolMessage ap{msg};
         auto p = ap.getPacket();
-        int ret_code;
-        ret_code = s.sendall(p, addr);
-
-        return ret_code;
+        s.sendall(p, addr);
     }
 }

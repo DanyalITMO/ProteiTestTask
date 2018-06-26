@@ -5,13 +5,13 @@
 #ifndef PROTEITESTTASK_HIGHLEVELSOCKET_H
 #define PROTEITESTTASK_HIGHLEVELSOCKET_H
 
-
 #include "HighLevelSocket.h"
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <cstdio>
 #include <string>
+
 namespace network {
 
 class HighLevelSocket {
@@ -27,14 +27,16 @@ public:
 
    int close();
 
+   bool init() const noexcept;
+
    int getLowLevelSocket() const noexcept;
    const struct sockaddr_in& getSockAddr() const noexcept;
 
-    int recvAll(std::string& msg, struct sockaddr_in* addr = nullptr);
-    int sendall(const std::string& msg, struct sockaddr_in* addr = nullptr);
+   void recvAll(std::string& msg, struct sockaddr_in* addr = nullptr);
+   void sendall(const std::string& msg, struct sockaddr_in* addr = nullptr);
 
 private:
-    int sendMessage(const std::string& msg, struct sockaddr_in* addr = nullptr);
+   int sendMessage(const std::string& msg, struct sockaddr_in* addr = nullptr);
 
    constexpr static int _buf_size{65536};
    char _buf[_buf_size];
@@ -42,8 +44,8 @@ private:
    int _sock;
    struct sockaddr_in _addr;
 
+   bool _init{true};
 };
 }
-
 
 #endif //PROTEITESTTASK_HIGHLEVELSOCKET_H

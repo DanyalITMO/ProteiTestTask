@@ -20,9 +20,7 @@ namespace network {
     UDPIncomingMessage UDPServer::recv() {
         struct sockaddr_in addr;
         std::string msg;
-        int ret_code = recvApplication(_listener, msg, &addr);
-        if (ret_code < 0)
-            throw std::runtime_error{"It's impossible to correctly accept data"};
+        recvApplication(_listener, msg, &addr);
 
         return UDPIncomingMessage{addr, _listener, msg};
     }

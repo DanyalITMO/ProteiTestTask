@@ -18,8 +18,8 @@ namespace network {
         int sock;
         sock = ::accept(_listener.getLowLevelSocket(), nullptr, nullptr);
         if (sock < 0) {
-            perror("accept");
-            throw std::runtime_error{"can not accept. Try again"};//TODO handle this
+            perror("TCPServer::accept");
+            throw std::runtime_error{"Session can not be created"};//TODO handle this
         }
 
 
