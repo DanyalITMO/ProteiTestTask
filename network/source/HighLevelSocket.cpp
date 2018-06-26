@@ -33,51 +33,41 @@ int HighLevelSocket::close()
       perror("HighLevelSocket::close()");
    return ret;
 }
-/*
-void HighLevelSocket::recvMessage(std::string& msg, struct sockaddr_in* addr)
-{
 
-}*/
+std::string HighLevelSocket::recvMessage(std::size_t min_size, struct sockaddr_in* addr)
+{
+   std::string ret;
+   ssize_t bytes_read;
+
+   while (ret.size() < min_size) {
+      if (addr != nullptr) {
+         socklen_t size = sizeof(*addr);
+         bytes_read = recvfrom(_sock, _buf, _buf_size, 0, (struct sockaddr*) addr, &size);
+      }
+      else {
+         bytes_read = ::recv(_sock, _buf, _buf_size, 0);
+      }
+      if (bytes_read <= 0) {
+         perror("HighLevelSocket::recvMessage");
+         throw std::runtime_error{"Сan not receive the whole package"};
+      }
+
+      ret += std::string(_buf, bytes_read);
+   }
+
+   return ret;
+}
+
 std::string HighLevelSocket::recvAll(struct sockaddr_in* addr)
 {
-   ssize_t bytes_read;
-   std::string temp;
+   auto packet = recvMessage(ApplicationProtocolMessage::getLenghtHeaderSize(), addr);
 
-   while (temp.size() < ApplicationProtocolMessage::getLenghtHeaderSize()) {
-      if (addr != nullptr) {
-         socklen_t size = sizeof(*addr);
-         bytes_read = recvfrom(_sock, _buf, _buf_size, 0, (struct sockaddr*) addr, &size);
-      }
-      else {
-         bytes_read = ::recv(_sock, _buf, _buf_size, 0);
-      }
-      if (bytes_read <= 0) {
-         perror("HighLevelSocket::recvAll");
-         throw std::runtime_error{"Сan not receive the whole package"};
-      }/*return bytes_read;*/
+   auto data_size = ApplicationProtocolMessage::getSize(packet);
 
-      temp += std::string(_buf, bytes_read);
-   }
+   if(packet.size() < data_size + ApplicationProtocolMessage::getLenghtHeaderSize())
+      packet += recvMessage(data_size + ApplicationProtocolMessage::getLenghtHeaderSize() - packet.size(), addr);
 
-   auto data_size = ApplicationProtocolMessage::getSize(temp);
-
-   while (temp.size() < data_size + ApplicationProtocolMessage::getLenghtHeaderSize()) {
-      if (addr != nullptr) {
-         socklen_t size = sizeof(*addr);
-         bytes_read = recvfrom(_sock, _buf, _buf_size, 0, (struct sockaddr*) addr, &size);
-      }
-      else {
-         bytes_read = ::recv(_sock, _buf, _buf_size, 0);
-      }
-      if (bytes_read <= 0) {
-         perror("HighLevelSocket::recvAll");
-         throw std::runtime_error{"Сan not receive the whole package"};
-      }/*return bytes_read;*/
-
-      temp += std::string(_buf, bytes_read);
-   }
-
-   return temp;
+   return packet;
 }
 
 
