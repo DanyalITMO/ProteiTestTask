@@ -6,7 +6,7 @@
 #define PROTEITESTTASK_SETTINGS_H
 
 #include "string"
-#include "Helper.h"
+#include "NetworkHelper.h"
 namespace client {
 
 class Setting {

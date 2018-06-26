@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Helper.h"
+#include "NetworkHelper.h"
 #include "ClientHelper.h"
 #include "Settings.h"
 

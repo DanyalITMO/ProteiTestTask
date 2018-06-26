@@ -6,7 +6,6 @@
 #define PROTEITESTTASK_TCPCLIENT_H
 
 
-#include <string>
 #include "Client.h"
 namespace network {
 

@@ -5,14 +5,7 @@
 #include "Client.h"
 
 //#include "UDPClient.h"
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <unistd.h>
-#include <cstdio>
-#include <string>
-#include <Helper.h>
-#include "ApplicationProtocol.h"
+#include <NetworkHelper.h>
 
 namespace network {
 

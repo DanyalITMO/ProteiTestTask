@@ -3,7 +3,7 @@
 //
 
 #include <ApplicationProtocol.h>
-#include "Helper.h"
+#include "NetworkHelper.h"
 #include "HighLevelSocket.h"
 
 namespace network {

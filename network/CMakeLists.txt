@@ -3,12 +3,12 @@ project(network)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(SOURCE
+set(NETWORK_SOURCE
         source/TCPServer.cpp
         source/TCPSession.cpp
         source/Server.cpp
         source/Client.cpp
-        source/Helper.cpp
+        source/NetworkHelper.cpp
         include/Server.h
         source/UDPServer.cpp
         include/UDPServer.h
@@ -20,10 +20,11 @@ set(SOURCE
         include/TCPClient.h
         source/ApplicationProtocol.cpp
         source/HighLevelSocket.cpp
+        CACHE INTERNAL ""
         )
 
 include_directories(include)
-add_library(${PROJECT_NAME} SHARED ${SOURCE})
+add_library(${PROJECT_NAME} SHARED ${NETWORK_SOURCE})
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include )
 
 set(TEST_SOURCES

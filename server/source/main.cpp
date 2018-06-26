@@ -4,7 +4,7 @@
 #include <thread>
 #include <Setting.h>
 #include "TCPServer.h"
-#include "Helper.h"
+#include "ServerHelper.h"
 #include "Statistic.h"
 #include "SyncOut.h"
 

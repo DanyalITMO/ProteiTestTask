@@ -10,7 +10,7 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <Helper.h>
+#include <NetworkHelper.h>
 #include <ApplicationProtocol.h>
 
 namespace network {

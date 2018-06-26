@@ -3,7 +3,7 @@
 //
 
 #include <ApplicationProtocol.h>
-#include <Helper.h>
+#include <NetworkHelper.h>
 #include "UDPIncomingMessage.h"
 #include "HighLevelSocket.h"
 

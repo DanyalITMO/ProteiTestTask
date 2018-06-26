@@ -5,7 +5,7 @@
 #ifndef PROTEITESTTASK_CLIENTHELPER_H
 #define PROTEITESTTASK_CLIENTHELPER_H
 
-#include <Helper.h>
+#include <NetworkHelper.h>
 #include "string"
 #include "Settings.h"
 #include "UDPClient.h"

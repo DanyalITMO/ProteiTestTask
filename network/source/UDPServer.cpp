@@ -9,7 +9,7 @@
 #include <unistd.h>
 #include <cstdio>
 #include <iostream>
-#include <Helper.h>
+#include <NetworkHelper.h>
 
 
 namespace network {
