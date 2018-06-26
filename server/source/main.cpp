@@ -38,7 +38,7 @@ void tcpConnection(int port) {
         return;
     }
 
-    SyncOut{} << "The TCP server is running on the port "
+    SyncOut{} << "TCP server is running on the port "
               << Setting::Instance().getTCPPort() << std::endl;
 
     while (true) {
@@ -77,10 +77,12 @@ void udpConnection(int port) {
 
     network::UDPServer udp_server{port};
 
-    if (!udp_server.isInit())
+    if (!udp_server.isInit()) {
+        SyncErr{} << "UDP server can not be created" << std::endl;
         return;
+    }
 
-    SyncOut{} << "The UDP server is running on the port "
+    SyncOut{} << "UDP server is running on the port "
               << Setting::Instance().getUDPPort() << std::endl;
 
     while (true) {
