@@ -3,6 +3,8 @@
 //
 
 #include <thread>
+#include <condition_variable>
+#include <atomic>
 #include "gtest/gtest.h"
 #include "Client.h"
 #include "TCPServer.h"
@@ -25,6 +27,7 @@ std::string random_string(size_t length) {
     return str;
 }
 
+
 void tcpConnection(int port) {
     network::TCPServer tcp_server{port};
 
@@ -32,6 +35,7 @@ void tcpConnection(int port) {
         std::cerr << "TCP server can not be created" << std::endl;
         return;
     }
+
 
     try {
 
@@ -47,31 +51,39 @@ void tcpConnection(int port) {
     catch (const std::runtime_error &ex) {
         std::cerr << ex.what() << std::endl;
     }
-
 }
+
 
 class NetworkTester : public ::testing::Test {
 protected:
     const int port;
 
     std::unique_ptr<Client> _client;
+    std::thread _thread;
+
 public:
 
-    NetworkTester() : port{3425}/*, _server{port}*/ {
+    NetworkTester() : port{3425} {
     }
 
-    void SetUp() override {}
+    void SetUp() override {
+        _thread = std::thread(tcpConnection, port);
+    }
+
+    void TearDown() override {
+        if (_thread.joinable())
+            _thread.join();
+    }
 
 
     void checker(const std::string &msg) {
-        std::thread t(tcpConnection, port);
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-        _client = std::make_unique<TCPClient>(port);
-        _client->send(msg);
-        auto recv_msg = _client->recv();/*, _server{port}*/
 
-        if (t.joinable())
-            t.join();
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        _client = std::make_unique<TCPClient>(port);
+
+        _client->send(msg);
+        auto recv_msg = _client->recv();
+
         EXPECT_EQ(msg, recv_msg);
     }
 };
@@ -102,14 +114,13 @@ TEST_F(NetworkTester, ShouldWorkIfMessageVeryBigSize) {
     checker(msg);
 }
 
-/*
+
 TEST_F(NetworkTester, ShouldThrowExceptionIfMessagOverSizeSize) {
     auto msg = random_string(65537);
-    _client->send(msg);
-
+    ASSERT_ANY_THROW(checker(msg));
+    _client->send("placeholder");
+    _client->recv();
 }
-*/
-
 
 }
 
