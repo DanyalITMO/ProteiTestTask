@@ -32,12 +32,14 @@ public:
    int getLowLevelSocket() const noexcept;
    const struct sockaddr_in& getSockAddr() const noexcept;
 
-   std::string recvMessage(std::size_t min_size, struct sockaddr_in* addr);
    std::string recvAll(struct sockaddr_in* addr = nullptr);
    void sendall(const std::string& msg, struct sockaddr_in* addr = nullptr);
 
 private:
-   int sendMessage(const std::string& msg, struct sockaddr_in* addr = nullptr);
+
+   std::string recvMessage(std::size_t min_size, struct sockaddr_in* addr);
+
+   void sendMessage(const std::string& msg, struct sockaddr_in* addr = nullptr);
 
    constexpr static int _buf_size{65536};
    char _buf[_buf_size];

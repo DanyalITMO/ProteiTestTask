@@ -52,7 +52,7 @@ std::string HighLevelSocket::recvMessage(std::size_t min_size, struct sockaddr_i
          throw std::runtime_error{"Сan not receive the whole package"};
       }
 
-      ret += std::string(_buf, bytes_read);
+      ret += std::string(_buf, static_cast<size_t>(bytes_read));
    }
 
    return ret;
@@ -64,50 +64,46 @@ std::string HighLevelSocket::recvAll(struct sockaddr_in* addr)
 
    auto data_size = ApplicationProtocolMessage::getSize(packet);
 
-   if(packet.size() < data_size + ApplicationProtocolMessage::getLenghtHeaderSize())
-      packet += recvMessage(data_size + ApplicationProtocolMessage::getLenghtHeaderSize() - packet.size(), addr);
+   if (packet.size() < data_size + ApplicationProtocolMessage::getLenghtHeaderSize())
+      packet += recvMessage(
+            data_size + ApplicationProtocolMessage::getLenghtHeaderSize() - packet.size(),
+            addr);
 
    return packet;
 }
 
-
 void HighLevelSocket::sendall(const std::string& msg, struct sockaddr_in* addr)
 {
-   int n = 1;
    std::size_t max_udp_size = 65507;  //64kb - ip (20 )- udp(8) headers
 
    auto chunk_count = static_cast<std::size_t>(msg.size() / max_udp_size);
-   for (std::size_t i = 0; i < chunk_count && n > 0; i++) {
-      n = sendMessage(msg.substr(i * max_udp_size, max_udp_size), addr);
+
+   for (std::size_t i = 0; i < chunk_count; i++) {
+      sendMessage(msg.substr(i * max_udp_size, max_udp_size), addr);
    }
-   n = sendMessage(msg.substr(chunk_count * max_udp_size, msg.size() - (chunk_count * max_udp_size)),
-                   addr);
-   if (n == -1) {
-      perror("HighLevelSocket::sendAll");
-      throw std::runtime_error{"Сan not send the whole package"};
-   }
+   sendMessage(msg.substr(chunk_count * max_udp_size,
+                          msg.size() - (chunk_count * max_udp_size)), addr);
 }
 
-int HighLevelSocket::sendMessage(const std::string& msg, struct sockaddr_in* addr)
+void HighLevelSocket::sendMessage(const std::string& msg, struct sockaddr_in* addr)
 {
    std::size_t total = 0;
    ssize_t n;
 
    while (total < msg.size()) {
       if (addr != nullptr)
-         n = sendto(_sock, msg.substr(total, msg.size() - total).c_str(),
-                    msg.size() - total,
-                    0,
+         n = sendto(_sock, msg.substr(total, msg.size() - total).c_str(), msg.size() - total, 0,
                     (struct sockaddr*) addr, sizeof(*addr));
       else
-         n = send(_sock, msg.substr(total, msg.size() - total).c_str(),
-                  msg.size() - total,
+         n = send(_sock, msg.substr(total, msg.size() - total).c_str(), msg.size() - total,
                   0);
 
-      if (n == -1) { break; }
+      if (n == -1) {
+         perror("HighLevelSocket::sendAll");
+         throw std::runtime_error{"Сan not send the whole package"};
+      }
       total += n;
    }
-   return n == -1 ? -1 : 0;
 }
 
 int HighLevelSocket::getLowLevelSocket() const noexcept
