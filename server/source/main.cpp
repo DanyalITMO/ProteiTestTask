@@ -11,7 +11,7 @@
 
 namespace server {
 
-void commonHandler(const std::string r)
+void commonHandler(const std::string& r)
 {
    Statistic stats;
    auto numbers = filterNumber(r);

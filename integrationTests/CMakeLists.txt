@@ -6,6 +6,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(INTEGRATE_SOURCE
     source/IntTests.cpp
 )
-message("integreate" ${CLIENT_SOURCES})
+message("sd" ${CMAKE_SOURCE_DIR}/client)
+include_directories(${CMAKE_SOURCE_DIR}/client)
+include_directories(${CMAKE_SOURCE_DIR}/server)
+#message("integreate" ${CLIENT_SOURCES})
 add_executable(${PROJECT_NAME} ${INTEGRATE_SOURCE} ${CLIENT_SOURCE} ${SERVER_SOURCE} ${gtestMain})
 target_link_libraries(${PROJECT_NAME} network gtest)
