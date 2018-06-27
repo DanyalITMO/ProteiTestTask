@@ -26,7 +26,6 @@ public:
 
     std::size_t getSize() const noexcept;
 
-//   void setPacket(const std::string&);
 
 private:
 

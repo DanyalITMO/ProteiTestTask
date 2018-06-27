@@ -4,7 +4,6 @@
 
 #include "Client.h"
 
-//#include "UDPClient.h"
 #include <NetworkHelper.h>
 
 namespace network {

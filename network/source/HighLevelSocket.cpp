@@ -2,7 +2,7 @@
 // Created by danyal on 25.06.18.
 //
 
-#include <iostream>
+#include <stdexcept>
 #include "ApplicationProtocol.h"
 #include "HighLevelSocket.h"
 

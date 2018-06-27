@@ -3,6 +3,7 @@
 //
 
 #include <ApplicationProtocol.h>
+#include <stdexcept>
 #include "NetworkHelper.h"
 #include "HighLevelSocket.h"
 

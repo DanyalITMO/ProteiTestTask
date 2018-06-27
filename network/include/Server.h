@@ -5,8 +5,9 @@
 #ifndef PROTEITESTTASK_SERVER_H
 #define PROTEITESTTASK_SERVER_H
 
-#include <sys/socket.h>
 #include "HighLevelSocket.h"
+
+#include <sys/socket.h>
 
 namespace network {
 

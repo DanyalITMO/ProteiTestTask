@@ -5,7 +5,6 @@
 #ifndef PROTEITESTTASK_HELPER_H
 #define PROTEITESTTASK_HELPER_H
 
-#include <memory>
 #include "HighLevelSocket.h"
 
 namespace network {

@@ -6,15 +6,11 @@
 #define SERVER_SOCKETWRAPPER_H
 
 
-#include <memory>
-#include "string_view"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include "TCPSession.h"
-#include <list>
 #include "Server.h"
-#include <optional>
 
 namespace network {
 

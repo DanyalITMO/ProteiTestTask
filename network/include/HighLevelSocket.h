@@ -9,7 +9,6 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
-#include <cstdio>
 #include <string>
 
 namespace network {

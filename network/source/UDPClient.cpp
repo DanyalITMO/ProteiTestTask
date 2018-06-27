@@ -3,12 +3,6 @@
 //
 
 #include "UDPClient.h"
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <unistd.h>
-#include <cstdio>
-#include <string>
 
 namespace network {
 

@@ -5,7 +5,7 @@
 #ifndef PROTEITESTTASK_CLIENT_H
 #define PROTEITESTTASK_CLIENT_H
 
-#include "string"
+#include <string>
 #include <netinet/in.h>
 #include "HighLevelSocket.h"
 
