@@ -18,11 +18,7 @@ class Statistic {
 public:
     template<template<typename, typename...> class CONT>
     void add(const CONT<ValueType> &arg) {
-        //TODO fix it
-        for (auto &&it : arg) {
-            _numbers.insert(it);
-        }
-//        std::copy(std::begin(arg), std::end(arg), std::end(_numbers));
+        std::copy(std::cbegin(arg), std::cend(arg), std::inserter(_numbers, std::cend(_numbers)));
     }
 
     decltype(auto) getOptionalMin() const noexcept {
