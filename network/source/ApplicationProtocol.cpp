@@ -2,7 +2,7 @@
 // Created by danyal on 21.06.18.
 //
 
-#include <stdexcept>
+#include "NetworkError.h"
 #include "ApplicationProtocol.h"
 
 namespace network {
@@ -12,7 +12,7 @@ ApplicationProtocolMessage::ApplicationProtocolMessage(const std::string& data) 
       data}
 {
    if (data.size() > 65536)//64kb +  lenght headers
-      throw std::runtime_error{"data size > 64kb"};
+      throw NetworkError{"data size > 64kb"};
 
    _msg_size = data.size();
    _header = std::to_string(data.size());
@@ -55,7 +55,7 @@ std::size_t ApplicationProtocolMessage::getSize() const noexcept
 std::size_t ApplicationProtocolMessage::getSize(const std::string& packet)
 {
    if (packet.size() < _lenght_size)
-      std::runtime_error{"incorrect packet. Size is less than header size"};
+      throw NetworkError{"incorrect packet. Size is less than header size"};
 
    auto header = packet.substr(0, _lenght_size);
    return std::stoull(header);

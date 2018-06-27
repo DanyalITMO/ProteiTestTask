@@ -20,8 +20,8 @@ set(NETWORK_SOURCE
         include/TCPClient.h
         source/ApplicationProtocol.cpp
         source/HighLevelSocket.cpp
-        CACHE INTERNAL ""
-        )
+        source/NetworkError.cpp
+        include/NetworkError.h)
 
 include_directories(include)
 add_library(${PROJECT_NAME} SHARED ${NETWORK_SOURCE})

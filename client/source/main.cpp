@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
             client->send(msg);
             std::cout << client->recv() << std::endl;
         }
-        catch (std::runtime_error &er) {
+        catch (const std::runtime_error &er) {
             std::cerr << er.what();
         }
 

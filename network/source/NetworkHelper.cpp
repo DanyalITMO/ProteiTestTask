@@ -3,7 +3,7 @@
 //
 
 #include <ApplicationProtocol.h>
-#include <stdexcept>
+#include <NetworkError.h>
 #include "NetworkHelper.h"
 #include "HighLevelSocket.h"
 
@@ -15,7 +15,7 @@ Protocol stringToProtocol(std::string_view str) {
     else if (str == "TCP")
         return Protocol::TCP;
     else
-        throw std::runtime_error{"Incorrect protocol type"};
+        throw NetworkError{"Incorrect protocol type"};
 }
 
 std::string recvApplication(HighLevelSocket &s, struct sockaddr_in *addr) {

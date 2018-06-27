@@ -3,6 +3,7 @@
 #include <UDPServer.h>
 #include <thread>
 #include <Setting.h>
+#include <NetworkError.h>
 #include "TCPServer.h"
 #include "ServerHelper.h"
 #include "Statistic.h"
@@ -62,11 +63,14 @@ void tcpConnection(int port) {
                 session.send(r);
 #endif
             }
+            catch (const network::NetworkError &ex) {
+                session.send(std::string("Network error:") + ex.what());
+            }
             catch (const std::runtime_error &ex) {
                 session.send(std::string("Error:") + ex.what());
             }
         }
-        catch (const std::runtime_error &ex) {
+        catch (const std::exception &ex) {
             SyncErr{} << ex.what() << std::endl;
         }
     }
@@ -86,15 +90,18 @@ void udpConnection(int port) {
               << Setting::Instance().getUDPPort() << std::endl;
 
     while (true) {
-        auto dataSocket = udp_server.recv();
-        auto r = dataSocket.getMessage();
+        auto incomingMessage = udp_server.recv();
+        auto r = incomingMessage.getMessage();
 
         try {
             commonHandler(r);
-            dataSocket.send(r);
+            incomingMessage.send(r);
+        }
+        catch (const network::NetworkError &ex) {
+            incomingMessage.send(std::string("Network error:") + ex.what());
         }
         catch (const std::exception &ex) {
-            dataSocket.send("Error");
+            incomingMessage.send("Error");
             SyncErr{} << ex.what();
         }
     }

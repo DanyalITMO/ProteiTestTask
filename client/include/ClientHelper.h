@@ -10,6 +10,7 @@
 #include "Settings.h"
 #include "UDPClient.h"
 #include "TCPClient.h"
+#include <memory>
 
 namespace client {
 

@@ -3,6 +3,7 @@
 //
 
 #include <stdexcept>
+#include <NetworkError.h>
 #include "ApplicationProtocol.h"
 #include "HighLevelSocket.h"
 
@@ -44,7 +45,7 @@ std::string HighLevelSocket::recvMessage(std::size_t min_size, struct sockaddr_i
         }
         if (bytes_read <= 0) {
             perror("HighLevelSocket::recvMessage");
-            throw std::runtime_error{"Сan not receive the whole package"};
+            throw NetworkError{"Сan not receive the whole package"};
         }
 
         ret += std::string(_buf, static_cast<size_t>(bytes_read));
@@ -93,7 +94,7 @@ void HighLevelSocket::sendMessage(const std::string &msg, struct sockaddr_in *ad
 
         if (n == -1) {
             perror("HighLevelSocket::sendAll");
-            throw std::runtime_error{"Сan not send the whole package"};
+            throw NetworkError{"Сan not send the whole package"};
         }
         total += n;
     }

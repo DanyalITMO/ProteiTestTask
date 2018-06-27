@@ -3,6 +3,7 @@
 //
 #include <unistd.h>
 #include <regex>
+#include <NetworkError.h>
 #include "TCPServer.h"
 
 namespace network {
@@ -19,7 +20,7 @@ TCPSession TCPServer::accept() {
     sock = ::accept(_listener.getLowLevelSocket(), nullptr, nullptr);
     if (sock < 0) {
         perror("TCPServer::accept");
-        throw std::runtime_error{"Session can not be created"};//TODO handle this
+        throw  NetworkError{"Session can not be created"};//TODO handle this
     }
 
 
